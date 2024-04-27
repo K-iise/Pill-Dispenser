@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PillDispenser</string>
+    <string name="Notification">
+        이름과 휴대폰번호를 \n
+        입력해주세요.
+    </string>
 </resources>
