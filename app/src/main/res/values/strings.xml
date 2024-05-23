@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PillDispenser</string>
+    <string name="app_name"></string>
     <string name="Notification">
         이름, 주민등록번호, \n
         핸드폰번호를 입력해주세요.
