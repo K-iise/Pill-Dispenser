@@ -2,27 +2,24 @@ package com.capstone.pilldispenser;
 
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-public class MainActivity extends AppCompatActivity {
+public class Device_select extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate (savedInstanceState);
-        setContentView (R.layout.device_register);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_device_select);
 
+        
         // Menu Button, Drawer 생성
         ImageButton menuButton = (ImageButton) findViewById(R.id.action_ham);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
@@ -37,6 +34,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

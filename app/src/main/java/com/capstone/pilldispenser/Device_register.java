@@ -19,8 +19,11 @@ public class Device_register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_register);
 
+        // Menu Button, Drawer 생성
         ImageButton menuButton = (ImageButton) findViewById(R.id.action_ham);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
+
+        // 메뉴바 클릭 이벤트(Drawer 출력)
         menuButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

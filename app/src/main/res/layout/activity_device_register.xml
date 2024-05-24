@@ -95,6 +95,7 @@
             android:background="#0E5BDF"
             tools:ignore="MissingConstraints" />
 
+
         <!-- 기기 등록 화면 -->
         <RelativeLayout
             android:id="@+id/register"
@@ -317,6 +318,7 @@
                 android:textColor="#0E5BDF"
                 />
         </RelativeLayout>
+
 
         <!-- 하단바 -->
         <LinearLayout
