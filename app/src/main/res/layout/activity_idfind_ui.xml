@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0E5BDF">
+    android:background="#0E5BDF"
+    tools:context=".IDfindUI"
+    >
 
     <TextView
         android:id="@+id/textView"
@@ -152,7 +154,8 @@
                     android:text="인증받기"
                     android:textAlignment="center"
                     android:textColor="#1C26FF"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:ignore="RtlCompat" />
             </FrameLayout>
 
         </LinearLayout>
@@ -207,7 +210,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_newMatching_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -225,7 +228,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
             android:layout_height="40dp"

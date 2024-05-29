@@ -11,23 +11,10 @@
       <entry key="Device_select">
         <State />
       </entry>
-      <entry key="LoginUI">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\kimyu\.android\avd\Pixel_2_API_31.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-05-20T10:32:02.051240Z" />
-        </State>
-      </entry>
       <entry key="MainActivity">
+        <State />
+      </entry>
+      <entry key="RegisterUI">
         <State />
       </entry>
       <entry key="app">
