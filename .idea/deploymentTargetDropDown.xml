@@ -2,16 +2,16 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="Alarm_select">
+      <entry key="Alarm_delete">
         <State />
       </entry>
-      <entry key="Device_register">
+      <entry key="Alarm_select">
         <State />
       </entry>
       <entry key="Device_select">
         <State />
       </entry>
-      <entry key="MainActivity">
+      <entry key="Pill_select">
         <State />
       </entry>
       <entry key="RegisterUI">

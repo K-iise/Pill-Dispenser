@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        setContentView (R.layout.device_register);
+        setContentView (R.layout.activity_alarm_select);
 
         // Menu Button, Drawer 생성
         ImageButton menuButton = (ImageButton) findViewById(R.id.action_ham);
