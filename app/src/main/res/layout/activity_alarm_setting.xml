@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Alarm_setting">
+
+    <!-- 메인 컨텐츠 레이아웃 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+        <!-- 시간 설정 -->
+        <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#30D9D9D9"
+            android:timePickerMode="spinner"
+            tools:ignore="MissingConstraints" />
+
+        <RelativeLayout
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@id/timePicker"
+            >
+
+            <!-- 설정된 날짜 텍스트-->
+            <TextView
+                android:id="@+id/daytextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="오늘-6월 3일 (월)"
+                android:textColor="#000000"
+                android:textSize="16dp"
+                android:layout_marginLeft="20dp"
+                />
+
+            <!-- 캘린더 버튼 -->
+            <ImageButton
+                android:id="@+id/calenderbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/calender"
+                android:background="?attr/selectableItemBackground"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                />
+        </RelativeLayout>
+
+        <!-- 반복 요일 -->
+        <LinearLayout
+            android:id="@+id/repeat_days"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            >
+
+            <ToggleButton
+                android:id="@+id/sunday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg"
+                android:textColor="#FF0000"
+                android:textOff="일"
+                android:textOn="일" />
+
+            <ToggleButton
+                android:id="@+id/monday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg"
+                android:textOff="월"
+                android:textOn="월" />
+
+            <ToggleButton
+                android:id="@+id/tuesday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg"
+                android:textOff="화"
+                android:textOn="화" />
+
+            <ToggleButton
+                android:id="@+id/wednesday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg"
+                android:textOff="수"
+                android:textOn="수" />
+
+            <ToggleButton
+                android:id="@+id/thursday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg"
+                android:textOff="목"
+                android:textOn="목" />
+
+            <ToggleButton
+                android:id="@+id/friday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg"
+                android:textOff="금"
+                android:textOn="금" />
+
+            <ToggleButton
+                android:id="@+id/saturday"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_button_bg"
+                android:textColor="#0029FF"
+                android:textOff="토"
+                android:textOn="토" />
+
+        </LinearLayout>
+
+
+        <!-- 알람 정보 -->
+        <ScrollView
+            android:id="@+id/alarm_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/repeat_days"
+            tools:ignore="MissingConstraints">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                >
+
+                <!-- 알람 이름 -->
+                <EditText
+                    android:id="@+id/alarm_name_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="알람 이름"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:inputType="text"
+                    android:background="@drawable/alarm_information"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <!-- 알람음 선택 -->
+                <EditText
+                    android:id="@+id/alarm_name_sound"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="알람음"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_below="@id/alarm_name_edit"
+                    android:background="@drawable/alarm_information"
+                    />
+
+                <!-- 약통, 수량  -->
+                <LinearLayout
+                    android:id="@+id/pills"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="MissingConstraints"
+                    android:layout_below="@id/alarm_name_sound"
+                    android:layout_marginBottom="10dp"
+                    >
+
+                    <!-- 약통 번호 선택-->
+                    <Spinner
+                        android:id="@+id/gender_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:spinnerMode="dropdown"
+                        android:background="@drawable/alarm_button"
+                        android:layout_marginRight="2dp"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        />
+
+                    <!-- 수량 입력 -->
+                    <EditText
+                        android:id="@+id/pill_score"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/alarm_information"
+                        android:ems="10"
+                        android:hint="수량"
+                        android:layout_marginLeft="2dp"
+                        android:paddingLeft="10dp"
+                        />
+                </LinearLayout>
+
+                <android.widget.Button
+                    android:id="@+id/pill_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pills"
+                    android:background="@drawable/alarm_information"
+                    android:text="+"
+                    android:textSize="20dp"
+                    android:textColor="#50000000"
+                    />
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+
+        <!-- 하단 버튼 -->
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+            >
+
+            <!-- 취소 버튼 -->
+            <android.widget.Button
+                android:id="@+id/cancel_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="17dp"
+                android:text="취소"
+                android:background="@drawable/alarm_button"
+                />
+
+            <!-- 확인 버튼 -->
+            <android.widget.Button
+                android:id="@+id/check_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_toRightOf="@id/check_button"
+                android:textSize="17dp"
+                android:background="@drawable/alarm_button"
+                android:text="확인"/>
+        </LinearLayout>
+
+        <!-- 하단바 -->
+        <LinearLayout
+            android:id="@+id/bottom_navigation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#0E5BDF"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <RelativeLayout
+                android:id="@+id/item_home"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onItemClick">
+
+                <ImageButton
+                    android:id="@+id/action_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:src="@drawable/home" />
+
+                <ImageView
+                    android:id="@+id/bart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/group_1" />
+
+                <ImageButton
+                    android:id="@+id/action_gear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="10dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:src="@drawable/mdi_gear" />
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- 메뉴바(Drawer)-->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/menu_bottom"/>
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
