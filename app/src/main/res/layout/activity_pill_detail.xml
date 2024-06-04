@@ -217,8 +217,9 @@
                     android:gravity="center"
                     android:layout_below="@id/holdingpills">
 
+                    <!-- 효능 효과 버튼 -->
                     <RadioButton
-                        android:id="@+id/sunday"
+                        android:id="@+id/efficacy_button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -232,8 +233,9 @@
                         android:gravity="center"
                     />
 
+                    <!-- 주의사항 버튼 -->
                     <RadioButton
-                        android:id="@+id/monday"
+                        android:id="@+id/caution_button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -247,8 +249,9 @@
                         android:gravity="center"
                         />
 
+                    <!-- 부작용 버튼 -->
                     <RadioButton
-                        android:id="@+id/tuesday"
+                        android:id="@+id/side_effect_button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -262,8 +265,9 @@
                         android:gravity="center"
                         />
 
+                    <!-- 보관법 버튼 -->
                     <RadioButton
-                        android:id="@+id/wednesday"
+                        android:id="@+id/storage_button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -287,6 +291,35 @@
                     android:layout_below="@id/detail_button"
                     >
 
+                    <RelativeLayout
+                        android:id="@+id/layout_information"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <!-- title text-->
+                        <TextView
+                            android:id="@+id/text_information"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_text"
+                            android:textSize="18dp"
+                            android:layout_margin="10dp"
+                            android:textColor="#0E5BDF"
+                            android:textStyle="bold"
+                            />
+
+                        <!-- information text-->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/text_information"
+                            android:text="@string/informaiton"
+                            android:layout_margin="10dp"
+                            android:textColor="#111111"
+                            android:textStyle="bold"
+                            />
+
+                    </RelativeLayout>
                 </ScrollView>
 
 
