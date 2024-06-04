@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Pill_detail">
+    tools:context=".Pill_addition">
 
     <!-- 메인 컨텐츠 레이아웃 -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -97,13 +97,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
+            <!-- 화면 이름 -->
             <TextView
                 android:id="@+id/text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:text="알약 상세 조회"
+                android:text="알약 추가"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:textColor="#0E5BDF"
@@ -159,30 +160,7 @@
                     android:layout_alignStart="@+id/pill_name"
                     />
 
-                <!-- 업체 이름 -->
-                <TextView
-                    android:id="@+id/devicenam"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="경동제약"
-                    android:textSize="16dp"
-                    android:textColor="#60111111"
-                    android:layout_toRightOf="@id/pill_name"
-                    android:layout_alignTop="@id/pill_name"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="20dp"
-                    />
 
-                <!-- 공유 버튼 -->
-                <android.widget.ImageButton
-                    android:id="@+id/share_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/share"
-                    android:background="?attr/selectableItemBackground"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="15dp"
-                    />
 
                 <!-- 구분선 뷰-->
                 <View
@@ -231,7 +209,7 @@
                         android:button="@null"
                         android:minHeight="0dp"
                         android:gravity="center"
-                    />
+                        />
 
                     <!-- 주의사항 버튼 -->
                     <RadioButton

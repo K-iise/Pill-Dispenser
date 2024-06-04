@@ -71,6 +71,15 @@ public class LoginUI extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button buttonFindPassword = findViewById(R.id.button2);
+        buttonFindPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // PasswordfindUI 액티비티 시작
+                Intent intent = new Intent(LoginUI.this, PasswordfindUI.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -88,7 +97,7 @@ public class LoginUI extends AppCompatActivity {
 
             try {
                 // 서버 URL 설정
-                URL url = new URL("http://192.168.0.110:8080/PillJSP/Android/androidDB.jsp"); // JSP 파일의 URL로 수정해주세요.
+                URL url = new URL("http://192.168.0.2:8080/PillJSP/Android/androidDB.jsp"); // JSP 파일의 URL로 수정해주세요.
 
                 // HTTP 연결 설정
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();

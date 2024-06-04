@@ -2,19 +2,45 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="Alarm_delete">
-        <State />
-      </entry>
-      <entry key="Alarm_select">
-        <State />
-      </entry>
       <entry key="Alarm_setting">
         <State />
       </entry>
-      <entry key="Pill_detail">
+      <entry key="Device_delete">
         <State />
       </entry>
-      <entry key="Pill_select">
+      <entry key="Pill_addition">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="SERIAL_NUMBER" />
+                  <value value="R3CM709VGJM" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-06-04T12:01:13.455910Z" />
+        </State>
+      </entry>
+      <entry key="Pill_detail">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="SERIAL_NUMBER" />
+                  <value value="R3CM709VGJM" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-06-04T12:01:54.125547300Z" />
+        </State>
+      </entry>
+      <entry key="RegisterUI">
         <State />
       </entry>
       <entry key="app">
