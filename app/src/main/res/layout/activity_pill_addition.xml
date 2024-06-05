@@ -134,31 +134,54 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <!-- 알약 이름 -->
-                <TextView
-                    android:id="@+id/pill_name"
-                    android:layout_width="wrap_content"
+                <!-- 검색 레이아웃 -->
+                <LinearLayout
+                    android:id="@+id/search_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="아스피린정 500mg"
-                    android:textSize="19dp"
-                    android:textColor="#000000"
-                    android:textStyle="bold"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="8dp"
-                    />
+                    android:layout_marginBottom="15dp"
+                    android:orientation="horizontal"
+                    >
 
-                <!-- 알약 이름 영어 -->
-                <TextView
-                    android:id="@+id/pill_enname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Asplin tab. 500mg KPIC"
-                    android:textSize="15dp"
-                    android:textColor="#000000"
-                    android:layout_below="@id/pill_name"
-                    android:layout_alignStart="@+id/pill_name"
-                    />
+                    <!-- 드롭다운 -->
+                    <Spinner
+                        android:id="@+id/drop_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:spinnerMode="dropdown"
+                        android:background="@drawable/spinner_border"
+                        />
+                    <!-- 검색 입력창-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/pill_addition_search"
+                        android:orientation="horizontal"
+                        >
+                        <EditText
+                            android:id="@+id/search_text"
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:layout_height="match_parent"
+                            android:background="@color/white"
+                            android:layout_marginLeft="5dp"
+                            android:paddingLeft="10dp"
+                            />
+                        <ImageButton
+                            android:id="@+id/search_button"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/search"
+                            android:background="?attr/selectableItemBackground"
+                            android:layout_toRightOf="@id/search_text"
+                            />
+
+                    </LinearLayout>
+                </LinearLayout>
 
 
 
@@ -169,136 +192,529 @@
                     android:layout_height="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_below="@id/pill_enname"
+                    android:layout_below="@id/search_layout"
                     android:background="#0E5BDF" />
 
-                <!-- 화면 이름 -->
-                <TextView
-                    android:id="@+id/holdingpills"
-                    android:layout_width="wrap_content"
+                <!-- 검색 표 -->
+                <TableLayout
+                    android:id="@+id/search_table"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="허가정보 · 복약정보"
-                    android:textSize="18dp"
-                    android:textColor="#0E5BDF"
                     android:layout_below="@id/view2"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginBottom="10dp"
-                    />
-
-                <!-- 상세 정보 버튼-->
-                <RadioGroup
-                    android:id="@+id/detail_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_below="@id/holdingpills">
-
-                    <!-- 효능 효과 버튼 -->
-                    <RadioButton
-                        android:id="@+id/efficacy_button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/toggle_button_detail"
-                        android:textColor="@color/toggle_button_text_color"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        android:text="효능 · 효과"
-                        android:button="@null"
-                        android:minHeight="0dp"
-                        android:gravity="center"
-                        />
-
-                    <!-- 주의사항 버튼 -->
-                    <RadioButton
-                        android:id="@+id/caution_button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/toggle_button_detail"
-                        android:textColor="@color/toggle_button_text_color"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:text="주의사항"
-                        android:button="@null"
-                        android:minHeight="0dp"
-                        android:gravity="center"
-                        />
-
-                    <!-- 부작용 버튼 -->
-                    <RadioButton
-                        android:id="@+id/side_effect_button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/toggle_button_detail"
-                        android:textColor="@color/toggle_button_text_color"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:text="부작용"
-                        android:button="@null"
-                        android:minHeight="0dp"
-                        android:gravity="center"
-                        />
-
-                    <!-- 보관법 버튼 -->
-                    <RadioButton
-                        android:id="@+id/storage_button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/toggle_button_detail"
-                        android:textColor="@color/toggle_button_text_color"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:text="보관법"
-                        android:button="@null"
-                        android:minHeight="0dp"
-                        android:gravity="center"
-                        />
-                </RadioGroup>
-
-                <!-- 버튼에 따른 상세 정보 -->
-                <ScrollView
-                    android:id="@+id/scroll_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/detail_button"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
                     >
 
-                    <!-- information layout-->
-                    <RelativeLayout
-                        android:id="@+id/layout_information"
+                    <!-- TableRow를 설정합니다 -->
+                    <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content">
 
-                        <!-- title text-->
-                        <TextView
-                            android:id="@+id/text_information"
-                            android:layout_width="wrap_content"
+                        <!-- 첫 번째 TextView를 LinearLayout 안에 넣고, weight를 1로 설정합니다 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/title_text"
-                            android:textSize="18dp"
-                            android:layout_margin="10dp"
-                            android:textColor="#0E5BDF"
-                            android:textStyle="bold"
-                            />
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                        <!-- information text-->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_below="@id/text_information"
-                            android:text="@string/informaiton"
-                            android:layout_margin="10dp"
-                            android:textColor="#111111"
-                            android:textStyle="bold"
-                            />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:background="#CDCDCD"
+                                android:textColor="#111111"
+                                android:text="제품번호" />
+                        </LinearLayout>
 
-                    </RelativeLayout>
+                        <!-- 두 번째 TextView를 LinearLayout 안에 넣고, weight를 2로 설정합니다 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:background="#CDCDCD"
+                                android:textColor="#111111"
+                                android:text="제품명" />
+                        </LinearLayout>
+
+                        <!-- 세 번째 TextView를 LinearLayout 안에 넣고, weight를 1로 설정합니다 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:background="#CDCDCD"
+                                android:textColor="#111111"
+                                android:text="회사명" />
+                        </LinearLayout>
+                    </TableRow>
+                </TableLayout>
+
+                <!-- 검색된 내용들 -->
+                <!-- 나머지 행: 스크롤 가능 -->
+                <ScrollView
+                    android:id="@+id/table_scroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:layout_below="@id/search_table"
+                    android:fillViewport="true">
+
+                    <TableLayout
+                        android:id="@+id/search_contents"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp">
+
+                        <!-- 여기서부터 동적으로 행을 추가할 수 있습니다 -->
+                        <!-- 예시로 10개의 행을 추가합니다 -->
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textColor="#111111"
+                                android:background="@drawable/pill_addition_search"
+                                android:textSize="18dp"
+                                android:text="12345" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:background="@drawable/pill_addition_search"
+                                android:textSize="18dp"
+                                android:textColor="#111111"
+                                android:text="경동아스피린장용정" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="회사명1" />
+                        </TableRow>
+
+                        <!-- 추가적인 행들을 여기에 추가합니다 -->
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="12346" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="경보아스피린장용정" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="회사명2" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:textSize="18dp"
+                                android:text="12347" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:background="@drawable/pill_addition_search"
+                                android:textSize="18dp"
+                                android:textColor="#111111"
+                                android:text="광동아스피린장용정" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="회사명3" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="12348" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="국제아스피린장용정" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="회사명4" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="12349" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="명문아스피린장용정" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="회사명5" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="18dp"
+
+                                android:textColor="#111111"
+                                android:text="12349" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:textSize="18dp"
+
+                                android:textColor="#111111"
+                                android:text="제품명5" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="18dp"
+
+                                android:textColor="#111111"
+                                android:text="회사명5" />
+
+                        </TableRow>
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="18dp"
+
+                                android:textColor="#111111"
+                                android:text="12349" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="center"
+                                android:textSize="18dp"
+
+                                android:textColor="#111111"
+                                android:text="제품명5" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:textSize="18dp"
+
+                                android:textColor="#111111"
+                                android:text="회사명5" />
+
+                        </TableRow>
+
+
+
+                        <!-- 나머지 데이터 행들을 동적으로 추가 -->
+                    </TableLayout>
                 </ScrollView>
+
+
+                <!-- 검색된 표 -->
+                <TableLayout
+                    android:id="@+id/searched_table"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/table_scroll"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="20dp"
+                    >
+
+                    <!-- TableRow를 설정합니다 -->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <!-- 첫 번째 TextView를 LinearLayout 안에 넣고, weight를 1로 설정합니다 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:background="#CDCDCD"
+                                android:textColor="#111111"
+                                android:text="약통번호" />
+                        </LinearLayout>
+
+                        <!-- 두 번째 TextView를 LinearLayout 안에 넣고, weight를 2로 설정합니다 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:background="#CDCDCD"
+                                android:textColor="#111111"
+                                android:text="제품명" />
+                        </LinearLayout>
+
+                        <!-- 세 번째 TextView를 LinearLayout 안에 넣고, weight를 1로 설정합니다 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:background="#CDCDCD"
+                                android:textColor="#111111"
+                                android:text="수량" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <!-- TableRow를 설정합니다 -->
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <!-- 첫 번째 TextView를 LinearLayout 안에 넣고, weight를 1로 설정합니다 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="34dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <Spinner
+                                android:id="@+id/storage_number"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:spinnerMode="dropdown"
+                                android:background="@drawable/spinner_addition"
+                                />
+                        </LinearLayout>
+
+                        <!-- 두 번째 TextView를 LinearLayout 안에 넣고, weight를 2로 설정합니다 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="35dp"
+                            android:layout_weight="2"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="경동아스피린장용정" />
+                        </LinearLayout>
+
+                        <!-- 세 번째 TextView를 LinearLayout 안에 넣고, weight를 1로 설정합니다 -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="35dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:background="@drawable/pill_addition_search"
+                                android:textColor="#111111"
+                                android:text="100" />
+                        </LinearLayout>
+                    </TableRow>
+
+                </TableLayout>
+
+                <!-- 약품 추가 버튼 -->
+                <android.widget.Button
+                    android:id="@+id/add_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17dp"
+                    android:text="약품 추가"
+                    android:includeFontPadding="false"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:minHeight="0dp"
+                    android:paddingRight="40dp"
+                    android:paddingLeft="40dp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/border_white"
+                    android:layout_below="@+id/searched_table"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    />
+
+                <!-- 뒤로가기 버튼 -->
+                <android.widget.Button
+                    android:id="@+id/back_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/add_button"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="140dp"
+                    android:layout_marginRight="140dp"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:text="뒤로가기"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:background="#FAFAFA"
+                    android:textColor="#0E5BDF"
+                    />
+
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
