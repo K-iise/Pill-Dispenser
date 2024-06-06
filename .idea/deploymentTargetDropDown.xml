@@ -2,17 +2,43 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="Alarm_delete">
-        <State />
-      </entry>
       <entry key="Alarm_select">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\kimyu\.android\avd\Pixel_2_API_31.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-06-06T13:07:56.605358300Z" />
+        </State>
+      </entry>
+      <entry key="Alarm_setting">
         <State />
       </entry>
-      <entry key="Pill_addition">
+      <entry key="LoginUI">
         <State />
       </entry>
-      <entry key="Pill_edit">
-        <State />
+      <entry key="MainActivity">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="SERIAL_NUMBER" />
+                  <value value="R3CM709VGJM" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-06-06T11:08:27.296057900Z" />
+        </State>
       </entry>
       <entry key="Pill_record">
         <State />

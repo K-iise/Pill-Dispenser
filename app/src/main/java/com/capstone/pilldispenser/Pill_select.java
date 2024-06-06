@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 public class Pill_select extends AppCompatActivity {
 
+    private TextView deviceNumberTextView;
+    private TextView deviceNameTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,17 @@ public class Pill_select extends AppCompatActivity {
                 }
             }
         });
+
+        deviceNumberTextView = findViewById(R.id.devicenump);
+        deviceNameTextView = findViewById(R.id.devicenamp);
+
+        // 이전 화면으로부터 데이터 받아오기
+        String deviceNumber = getIntent().getStringExtra("deviceNumber");
+        String deviceName = getIntent().getStringExtra("deviceName");
+
+        // 받아온 데이터를 TextView에 설정
+        deviceNumberTextView.setText(deviceNumber);
+        deviceNameTextView.setText(deviceName);
 
     }
 }

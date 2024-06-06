@@ -200,8 +200,6 @@
                 app:track="@drawable/selector_switch"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-
-
         </RelativeLayout>
 
 

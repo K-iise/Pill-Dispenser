@@ -1,19 +1,14 @@
 package com.capstone.pilldispenser;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import android.util.Log;
+import android.content.Intent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -71,16 +66,6 @@ public class LoginUI extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Button buttonFindPassword = findViewById(R.id.button2);
-        buttonFindPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // PasswordfindUI 액티비티 시작
-                Intent intent = new Intent(LoginUI.this, PasswordfindUI.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
     // LoginUI AsyncTask 정의
@@ -97,7 +82,7 @@ public class LoginUI extends AppCompatActivity {
 
             try {
                 // 서버 URL 설정
-                URL url = new URL("http://192.168.0.2:8080/PillJSP/Android/androidDB.jsp"); // JSP 파일의 URL로 수정해주세요.
+                URL url = new URL("http://61.79.73.178:8080/PillJSP/Android/androidDB.jsp"); // JSP 파일의 URL로 수정해주세요.
 
                 // HTTP 연결 설정
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -164,5 +149,4 @@ public class LoginUI extends AppCompatActivity {
         }
 
     }
-
 }
