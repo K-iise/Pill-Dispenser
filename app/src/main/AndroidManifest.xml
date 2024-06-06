@@ -18,9 +18,11 @@
         android:theme="@style/Theme.PillDispenser"
         tools:targetApi="31">
         <activity
-            android:name=".Pill_edit"
+            android:name=".Pill_record"
             android:exported="true" />
-        <!-- 액티비티들 -->
+        <activity
+            android:name=".Pill_edit"
+            android:exported="true" /> <!-- 액티비티들 -->
         <activity
             android:name=".IDfindUI"
             android:exported="true">

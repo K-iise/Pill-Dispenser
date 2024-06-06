@@ -8,26 +8,13 @@
       <entry key="Alarm_select">
         <State />
       </entry>
-      <entry key="LoginUI">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="R3CM709VGJM" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-06-05T15:03:19.557905600Z" />
-        </State>
-      </entry>
       <entry key="Pill_addition">
         <State />
       </entry>
       <entry key="Pill_edit">
+        <State />
+      </entry>
+      <entry key="Pill_record">
         <State />
       </entry>
       <entry key="app">
