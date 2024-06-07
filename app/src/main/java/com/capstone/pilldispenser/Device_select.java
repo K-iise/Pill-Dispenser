@@ -30,6 +30,8 @@ public class Device_select extends AppCompatActivity {
     private String deviceNumber;
     private String deviceName;
 
+    private String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,9 @@ public class Device_select extends AppCompatActivity {
                 }
             }
         });
+
+        // 이전 화면으로부터 데이터 받아오기
+        userId = getIntent().getStringExtra("userId");
 
         deviceNumberTextView = findViewById(R.id.devicenumber);
         deviceNameTextView = findViewById(R.id.devicename);

@@ -25,6 +25,7 @@ public class LoginUI extends AppCompatActivity {
     private EditText editTextUserId;
     private EditText editTextPassword;
 
+    private String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,7 @@ public class LoginUI extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // 아이디와 비밀번호 입력값 가져오기
-                String userId = editTextUserId.getText().toString();
+                userId = editTextUserId.getText().toString();
                 String password = editTextPassword.getText().toString();
 
                 // LoginUI AsyncTask 실행
@@ -139,6 +140,7 @@ public class LoginUI extends AppCompatActivity {
                 Toast.makeText(LoginUI.this, "로그인 성공!", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(LoginUI.this, Device_select.class);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
 
             } else {
