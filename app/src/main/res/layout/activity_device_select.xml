@@ -91,6 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="6dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"
             app:layout_constraintTop_toBottomOf="@id/membertime"
             android:background="#0E5BDF"
             tools:ignore="MissingConstraints" />
@@ -100,6 +101,7 @@
             android:id="@+id/scroll_device"
             android:layout_width="match_parent"
             android:layout_height="500dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintTop_toBottomOf="@id/view1"
             >
             <LinearLayout
@@ -109,77 +111,6 @@
                 android:orientation="vertical"
                 >
                 <!-- 등록된 기기 화면-->
-                <RelativeLayout
-                    android:id="@+id/device"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="#F8F8F8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/view1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:ignore="MissingConstraints"
-                    >
-
-                    <ImageView
-                        android:id="@+id/Image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:src="@drawable/circleimage"/>
-
-                    <TextView
-                        android:id="@+id/devicenumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#FFFFFF"
-                        android:text=""
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:textColor="#0E5BDF"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="35dp"
-                        android:layout_toRightOf="@id/Image"/>
-
-
-                    <TextView
-                        android:id="@+id/devicename"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#FFFFFF"
-                        android:text=""
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:textColor="#0E5BDF"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="40dp"
-                        android:layout_above="@id/register"
-                        android:layout_alignRight="@id/register"
-                        />
-
-
-                    <TextView
-                        android:id="@+id/register"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="#FFFFFF"
-                        android:text="등록일자 : 2024-04-28"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        android:textColor="#0E5BDF"
-                        android:layout_below="@id/devicenumber"
-                        android:layout_alignLeft="@id/devicenumber"
-                        />
-
-
-                </RelativeLayout>
-
 
 
             </LinearLayout>
