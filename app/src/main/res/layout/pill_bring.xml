@@ -87,6 +87,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
+                android:onClick="onInformationButtonClick"
                 />
 
             <!-- 남은 알약 -->

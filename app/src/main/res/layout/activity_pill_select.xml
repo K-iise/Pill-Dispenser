@@ -253,14 +253,13 @@
                 <ScrollView
                     android:id="@+id/scrollpill"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="300dp"
                     android:layout_below="@id/holdingpills"
-                    android:layout_above="@id/addbutton"
                     >
                     <LinearLayout
                         android:id="@+id/scroll_linear"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         >
 

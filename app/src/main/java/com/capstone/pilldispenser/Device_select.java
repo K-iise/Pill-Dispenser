@@ -77,7 +77,7 @@ public class Device_select extends AppCompatActivity {
             public void run() {
                 HttpURLConnection urlConnection = null;
                 try {
-                    URL url = new URL("http://192.168.0.2:8080/PillJSP/Android/device_selectDB.jsp");
+                    URL url = new URL("http://61.79.73.178:8080/PillJSP/Android/device_selectDB.jsp");
                     urlConnection = (HttpURLConnection) url.openConnection();
 
                     InputStream in = urlConnection.getInputStream();
@@ -110,7 +110,7 @@ public class Device_select extends AppCompatActivity {
             public void run() {
                 HttpURLConnection urlConnection = null;
                 try {
-                    URL url = new URL("http://192.168.0.2:8080/PillJSP/Android/device_selectDB2.jsp");
+                    URL url = new URL("http://61.79.73.178:8080/PillJSP/Android/device_selectDB2.jsp");
                     urlConnection = (HttpURLConnection) url.openConnection();
 
                     InputStream in = urlConnection.getInputStream();

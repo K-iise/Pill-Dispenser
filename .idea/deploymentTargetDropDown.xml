@@ -2,7 +2,10 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="Alarm_select">
+      <entry key="Device_select">
+        <State />
+      </entry>
+      <entry key="LoginUI">
         <State>
           <runningDeviceTargetSelectedWithDropDown>
             <Target>
@@ -15,32 +18,10 @@
               </deviceKey>
             </Target>
           </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-06-06T13:07:56.605358300Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-06-07T16:30:24.494566Z" />
         </State>
       </entry>
-      <entry key="Alarm_setting">
-        <State />
-      </entry>
-      <entry key="LoginUI">
-        <State />
-      </entry>
-      <entry key="MainActivity">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="R3CM709VGJM" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-06-06T11:08:27.296057900Z" />
-        </State>
-      </entry>
-      <entry key="Pill_record">
+      <entry key="Pill_select">
         <State />
       </entry>
       <entry key="app">

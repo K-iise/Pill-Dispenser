@@ -89,13 +89,13 @@ public class Device_register extends AppCompatActivity {
         String deviceName = deviceNameEditText.getText().toString();
         String manufactureDate = manufactureDateEditText.getText().toString();
 
-        String url = "http://192.168.0.110:8080/PillJSP/Android/device_registerDB.jsp";
+        String url = "http://61.79.73.178:8080/PillJSP/Android/device_registerDB.jsp";
 
         new RegisterDeviceTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url, deviceId, deviceName, manufactureDate);
     }
 
     private void checkDuplicateDevice(String deviceId) {
-        String url = "http://192.168.0.110:8080/PillJSP/Android/check_device_duplicate.jsp";
+        String url = "http://61.79.73.178:8080:8080/PillJSP/Android/check_device_duplicate.jsp";
 
         new CheckDuplicateDeviceTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url, deviceId);
     }
