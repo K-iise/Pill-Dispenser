@@ -51,7 +51,7 @@
                     android:src="@drawable/group_1" />
 
                 <ImageButton
-                    android:id="@+id/action_check"
+                    android:id="@+id/action_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"

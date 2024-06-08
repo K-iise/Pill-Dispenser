@@ -1,5 +1,6 @@
 package com.capstone.pilldispenser;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,11 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import java.io.BufferedReader;
@@ -28,6 +25,8 @@ public class Device_register extends AppCompatActivity {
 
     private EditText deviceIdEditText, deviceNameEditText, manufactureDateEditText;
     private Button registerButton, duplicateCheckButton;
+
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +46,9 @@ public class Device_register extends AppCompatActivity {
                 }
             }
         });
+
+        // 이전 화면으로부터 userID 받아오기
+        userId = getIntent().getStringExtra("userId");
 
         deviceIdEditText = findViewById(R.id.editTextId_Reg);
         deviceNameEditText = findViewById(R.id.editTextId);
@@ -77,7 +79,9 @@ public class Device_register extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent intent = new Intent(Device_register.this, Device_select.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
             }
         });
 
@@ -91,11 +95,11 @@ public class Device_register extends AppCompatActivity {
 
         String url = "http://61.79.73.178:8080/PillJSP/Android/device_registerDB.jsp";
 
-        new RegisterDeviceTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url, deviceId, deviceName, manufactureDate);
+        new RegisterDeviceTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url, deviceId, deviceName, manufactureDate, userId);
     }
 
     private void checkDuplicateDevice(String deviceId) {
-        String url = "http://61.79.73.178:8080:8080/PillJSP/Android/check_device_duplicate.jsp";
+        String url = "http://61.79.73.178:8080/PillJSP/Android/check_device_duplicate.jsp";
 
         new CheckDuplicateDeviceTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url, deviceId);
     }
@@ -108,6 +112,7 @@ public class Device_register extends AppCompatActivity {
                 String deviceId = params[1];
                 String deviceName = params[2];
                 String manufactureDate = params[3];
+                String userId = params[4];
 
                 HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
                 connection.setRequestMethod("POST");
@@ -116,7 +121,8 @@ public class Device_register extends AppCompatActivity {
                 OutputStream outputStream = connection.getOutputStream();
                 String postData = "deviceId=" + URLEncoder.encode(deviceId, "UTF-8") +
                         "&deviceName=" + URLEncoder.encode(deviceName, "UTF-8") +
-                        "&manufactureDate=" + URLEncoder.encode(manufactureDate, "UTF-8");
+                        "&manufactureDate=" + URLEncoder.encode(manufactureDate, "UTF-8") +
+                        "&userId=" + URLEncoder.encode(userId, "UTF-8");
                 outputStream.write(postData.getBytes("UTF-8"));
                 outputStream.flush();
                 outputStream.close();
@@ -136,6 +142,10 @@ public class Device_register extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             Toast.makeText(Device_register.this, result, Toast.LENGTH_SHORT).show();
+            if (result.equals("기기 등록 성공!")) {
+                String deviceId = deviceIdEditText.getText().toString();
+                new InsertDeviceInfoTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, deviceId, userId);
+            }
         }
     }
 
@@ -185,6 +195,44 @@ public class Device_register extends AppCompatActivity {
             } else {
                 Toast.makeText(Device_register.this, result, Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private class InsertDeviceInfoTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                String deviceId = params[0];
+                String userId = params[1];
+
+                String url = "http://61.79.73.178:8080/PillJSP/Android/addInfo.jsp";
+
+                HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+
+                OutputStream outputStream = connection.getOutputStream();
+                String postData = "deviceId=" + URLEncoder.encode(deviceId, "UTF-8") +
+                        "&userId=" + URLEncoder.encode(userId, "UTF-8");
+                outputStream.write(postData.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    return "등록 정보 추가 성공!";
+                } else {
+                    return "서버 오류 발생";
+                }
+            } catch (Exception e) {
+                Log.e("InsertDeviceInfo", "Error occurred: " + e.getMessage(), e);
+                return "오류 발생: " + e.getMessage();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(Device_register.this, result, Toast.LENGTH_SHORT).show();
         }
     }
 

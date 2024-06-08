@@ -1,5 +1,6 @@
 package com.capstone.pilldispenser;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -80,8 +82,37 @@ public class Device_select extends AppCompatActivity {
         });*/
 
 
+        // 기기 삭제 Button 생성.
+        ImageButton deleteButton = (ImageButton) findViewById(R.id.action_delete);
+
+        // 기기 삭제 버튼 클릭 메소드
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Device_delete 액티비티로 전달할 Intent 생성
+                Intent intent = new Intent(Device_select.this, Device_delete.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+            }
+        });
+
+        // 새로 고침 Button 생성.
+        ImageButton returnButton = (ImageButton) findViewById(R.id.action_return);
+
+        // 새로 고침 클릭 메소드.
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
+
+
     }
 
+    // DB에서 로그인된 회원이 등록한 기기 정보들을 불러오고 출력하는 함수.
     private class GetDeviceInfo extends AsyncTask<String, Void, String> {
 
         @Override
@@ -94,6 +125,7 @@ public class Device_select extends AppCompatActivity {
             Log.d("GetDeviceInfo", "Response: " + response); // 응답 로그 출력
             return response;
         }
+
         @Override
         protected void onPostExecute(String result) {
             try {
@@ -106,6 +138,7 @@ public class Device_select extends AppCompatActivity {
 
                     addDeviceView(deviceNumber, deviceName, productionDate);
                 }
+                addDeviceButton();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -138,6 +171,7 @@ public class Device_select extends AppCompatActivity {
         linearLayout.addView(deviceView);
     }
 
+    // 등록된 기기들의 이미지 뷰를 선택하면 알약 선택화면으로 전환하는 함수.
     public void onInformationButtonClick(View view) {
         // 클릭된 정보 버튼의 부모 RelativeLayout 찾기
         RelativeLayout DeviceLayout = (RelativeLayout) view.getParent();
@@ -160,6 +194,36 @@ public class Device_select extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    // 기기 등록 버튼을 호출하는 버튼 추가하는 함수.
+    private void addDeviceButton() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View deviceButton = inflater.inflate(R.layout.device_add,null);
+
+        // 마진 설정 (left, top, right, bottom 순서로 dp 값 변환 후 설정)
+        int marginInDp = 20; // 원하는 마진 값을 dp 단위로 설정
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.setMargins(0, marginInDp, 0, marginInDp);
+
+        // 뷰에 레이아웃 파라미터 설정
+        deviceButton.setLayoutParams(layoutParams);
+
+        linearLayout.addView(deviceButton);
+    }
+
+    public void onAddButtonClick(View view) {
+
+        // add_button 클릭 시 Device_register 액티비티로 이동하면서 userId 전달
+        Intent intent = new Intent(Device_select.this, Device_register.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
+
+    }
+
+
 
 
 }
