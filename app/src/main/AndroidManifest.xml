@@ -18,13 +18,14 @@
         android:theme="@style/Theme.PillDispenser"
         tools:targetApi="31">
         <activity
+            android:name=".Pill_delete"
+            android:exported="false" />
+        <activity
             android:name=".Alarm_setting"
             android:exported="true" />
-
         <activity
             android:name=".Pill_select"
             android:exported="true" />
-
         <activity
             android:name=".Pill_detail"
             android:exported="true" />

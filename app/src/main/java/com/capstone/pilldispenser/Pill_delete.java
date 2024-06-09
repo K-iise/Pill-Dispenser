@@ -1,5 +1,6 @@
 package com.capstone.pilldispenser;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,8 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -22,17 +23,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import com.capstone.pilldispenser.HttpHandler;
+import org.w3c.dom.Text;
 
-public class Pill_select extends AppCompatActivity {
+public class Pill_delete extends AppCompatActivity {
+
     private LinearLayout linearLayout;
     private TextView deviceNumberTextView;
     private TextView deviceNameTextView;
     private String pillNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pill_select);
+        setContentView(R.layout.activity_pill_delete);
 
         // Menu Button, Drawer 생성
         ImageButton menuButton = (ImageButton) findViewById(R.id.action_ham);
@@ -66,15 +69,14 @@ public class Pill_select extends AppCompatActivity {
 
         // 기기 번호를 사용하여 데이터베이스에서 데이터 가져오기
         new GetPillInfo().execute(deviceNumber);
-        
-        // 알약 삭제 버튼 생성.
-        ImageButton deleteButton = (ImageButton) findViewById(R.id.deletebutton);
 
-        // 알약 삭제 버튼 클릭 이벤트. (알약 삭제 UI 호출)
-        deleteButton.setOnClickListener(new View.OnClickListener() {
+        // 알약 삭제 확인 버튼.
+        ImageButton checkButton = (ImageButton) findViewById(R.id.check_button);
+
+        // 알약 조회 화면으로 돌아가는 메소드.
+        checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // DeviceNumber TextView 찾기
                 TextView DeviceNumberView = (TextView) findViewById(R.id.devicenump);
 
@@ -87,14 +89,12 @@ public class Pill_select extends AppCompatActivity {
                 String deviceName = DeviceNameView.getText().toString();
 
                 // Pill_select 액티비티로 전달할 Intent 생성
-                Intent intent = new Intent(Pill_select.this, Pill_delete.class);
+                Intent intent = new Intent(Pill_delete.this, Pill_select.class);
                 intent.putExtra("deviceNumber", deviceNumber);
                 intent.putExtra("deviceName", deviceName);
                 startActivity(intent);
-
             }
         });
-
 
     }
 
@@ -131,14 +131,14 @@ public class Pill_select extends AppCompatActivity {
 
     private void addPillView(String cabinetNumber, String pillNumber, String pillName, String remainingPills) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        View pillView = inflater.inflate(R.layout.pill_bring,null);
+        View pillView = inflater.inflate(R.layout.pill_delete_bring,null);
 
         TextView cabinetNumberView = pillView.findViewById(R.id.cabinet_number);
         TextView pillNumberView = pillView.findViewById(R.id.pill_number);
         TextView pillNameView = pillView.findViewById(R.id.pill_name);
         TextView remainPillView = pillView.findViewById(R.id.remain_pill);
 
-        cabinetNumberView.setText("약통번호" + cabinetNumber);
+        cabinetNumberView.setText("약통번호 " + cabinetNumber);
         pillNumberView.setText(pillNumber);
         pillNameView.setText(pillName);
         remainPillView.setText(remainingPills + "정");
@@ -157,23 +157,60 @@ public class Pill_select extends AppCompatActivity {
         linearLayout.addView(pillView);
     }
 
-    public void onInformationButtonClick(View view) {
-        // 클릭된 정보 버튼의 부모 RelativeLayout 찾기
-        RelativeLayout pillLayout = (RelativeLayout) view.getParent();
+    public void onDeleteButtonClick(View view) {
+        new AlertDialog.Builder(Pill_delete.this)
+                .setTitle("삭제 확인")
+                .setMessage("삭제하시겠습니까?")
+                .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // "예" 버튼을 눌렀을 때의 동작을 여기에 작성합니다.
 
-        // pill_number TextView 찾기
-        TextView pillNumberView = pillLayout.findViewById(R.id.pill_number);
+                        // 클릭된 정보 버튼의 부모 RelativeLayout 찾기
+                        RelativeLayout DeviceLayout = (RelativeLayout) view.getParent();
 
-        // pill_number 텍스트 가져오기
-        pillNumber = pillNumberView.getText().toString();
+                        DeviceLayout = (RelativeLayout) DeviceLayout.getParent();
 
-        // Pill_detail 액티비티로 전달할 Intent 생성
-        Intent intent = new Intent(this, Pill_detail.class);
-        intent.putExtra("pill_number", pillNumber);
+                        // 약통번호 찾기.
+                        TextView cabinetNumberView = DeviceLayout.findViewById(R.id.cabinet_number);
+                        String cabinetnumber = cabinetNumberView.getText().toString();
+                        cabinetnumber = cabinetnumber.substring(5);
 
-        // Pill_detail 액티비티 시작
-        startActivity(intent);
+                        // DeviceNumber  찾기
+                        TextView DeviceNumberView = (TextView) findViewById(R.id.devicenump);
+                        String devicenumber = DeviceNumberView.getText().toString();
+
+                        // 함수 실행.
+                        new deletePill().execute(cabinetnumber, devicenumber);
+
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // "아니오" 버튼을 눌렀을 때의 동작을 여기에 작성합니다.
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
+    // 회원이 등록한 기기를 DB에서 제거하는 메소드.
+    private class deletePill extends AsyncTask<String, Void, String> {
 
+        @Override
+        protected String doInBackground(String... params) {
+            String cabinetnumber = params[0];
+            String devicenumber = params[1];
+            String url = "http://61.79.73.178:8080/PillJSP/Android/deletePill.jsp?cabinetnumber=" + cabinetnumber + "&devicenumber=" + devicenumber;
+            Log.d("deletePill", "URL: " + url); // URL 로그 출력
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(url);
+            Log.d("deletePill", "Response: " + response); // 응답 로그 출력
+            return response;
+        }
+
+    }
 }

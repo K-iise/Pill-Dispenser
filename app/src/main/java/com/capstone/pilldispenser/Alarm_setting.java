@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -44,6 +45,11 @@ public class Alarm_setting extends AppCompatActivity {
     private TextView dayTextView;
     private Calendar calendar;
 
+    private ArrayList<String> selectedDays = new ArrayList<>();
+
+    // 요일 토글 버튼들
+    private ToggleButton toggleButtonMon, toggleButtonTue, toggleButtonWed, toggleButtonThu,
+            toggleButtonFri, toggleButtonSat, toggleButtonSun;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,14 @@ public class Alarm_setting extends AppCompatActivity {
 
         TimePicker timePicker = findViewById(R.id.timePicker);
         dayTextView = findViewById(R.id.daytextView);
+
+        toggleButtonMon = findViewById(R.id.monday);
+        toggleButtonTue = findViewById(R.id.tuesday);
+        toggleButtonWed = findViewById(R.id.wednesday);
+        toggleButtonThu = findViewById(R.id.thursday);
+        toggleButtonFri = findViewById(R.id.friday);
+        toggleButtonSat = findViewById(R.id.saturday);
+        toggleButtonSun = findViewById(R.id.sunday);
 
         // 초기 시간 설정
         timePicker.setHour(6);
@@ -262,6 +276,16 @@ public class Alarm_setting extends AppCompatActivity {
 
     // 달력 다이얼로그 표시
     private void showDatePicker() {
+
+        toggleButtonMon.setChecked(false);
+        toggleButtonTue.setChecked(false);
+        toggleButtonWed.setChecked(false);
+        toggleButtonThu.setChecked(false);
+        toggleButtonFri.setChecked(false);
+        toggleButtonSat.setChecked(false);
+        toggleButtonSun.setChecked(false);
+        selectedDays.clear();
+
         // 현재 날짜를 기본으로 설정
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -311,6 +335,106 @@ public class Alarm_setting extends AppCompatActivity {
             SimpleDateFormat dateFormat = new SimpleDateFormat("내일-M월 dd일 (E)", Locale.getDefault());
             String formattedDate = dateFormat.format(selectedDate.getTime());
             dayTextView.setText(formattedDate);
+        }
+
+        toggleButtonMon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleDay("월", toggleButtonMon);
+            }
+        });
+
+        toggleButtonTue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleDay("화", toggleButtonTue);
+            }
+        });
+
+        toggleButtonWed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleDay("수", toggleButtonWed);
+            }
+        });
+
+        toggleButtonThu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleDay("목", toggleButtonThu);
+            }
+        });
+
+        toggleButtonFri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleDay("금", toggleButtonFri);
+            }
+        });
+
+        toggleButtonSat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleDay("토", toggleButtonSat);
+            }
+        });
+
+        toggleButtonSun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleDay("일", toggleButtonSun);
+            }
+        });
+    }
+
+    // 요일 토글 기능 구현
+    private void toggleDay(String day, ToggleButton toggleButton) {
+        if (toggleButton.isChecked()) {
+            if (!selectedDays.contains(day)) {
+                selectedDays.add(day);
+            }
+        } else {
+            selectedDays.remove(day);
+        }
+        updateDateTextView();
+    }
+
+    // 텍스트뷰에 선택된 요일 표시
+    private void updateDateTextView() {
+        TextView dayTextView = findViewById(R.id.daytextView);
+        if (selectedDays.isEmpty()) {
+            dayTextView.setText("오늘-" + (calendar.get(Calendar.MONTH) + 1) + "월 " +
+                    calendar.get(Calendar.DAY_OF_MONTH) + "일 (" +
+                    getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)) + ")");
+        } else {
+            StringBuilder selectedDaysText = new StringBuilder();
+            for (String day : selectedDays) {
+                selectedDaysText.append(day).append(", ");
+            }
+            selectedDaysText.delete(selectedDaysText.length() - 2, selectedDaysText.length());
+            dayTextView.setText("매주 " + selectedDaysText.toString());
+        }
+    }
+
+    // 숫자로 된 요일을 문자열로 변환
+    private String getDayOfWeek(int dayOfWeek) {
+        switch (dayOfWeek) {
+            case Calendar.SUNDAY:
+                return "일";
+            case Calendar.MONDAY:
+                return "월";
+            case Calendar.TUESDAY:
+                return "화";
+            case Calendar.WEDNESDAY:
+                return "수";
+            case Calendar.THURSDAY:
+                return "목";
+            case Calendar.FRIDAY:
+                return "금";
+            case Calendar.SATURDAY:
+                return "토";
+            default:
+                return "";
         }
     }
 }
