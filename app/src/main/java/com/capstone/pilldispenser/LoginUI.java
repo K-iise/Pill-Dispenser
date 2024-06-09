@@ -67,6 +67,15 @@ public class LoginUI extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button buttonFindPW = findViewById(R.id.button2);
+        buttonFindPW.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // IDfindUI 액티비티 시작
+                Intent intent = new Intent(LoginUI.this, PasswordfindUI.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // LoginUI AsyncTask 정의

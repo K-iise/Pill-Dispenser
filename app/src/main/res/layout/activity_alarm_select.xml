@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer"
@@ -133,75 +134,25 @@
                 />
         </RelativeLayout>
 
-        <!-- 알람 설정 뷰-->
-        <RelativeLayout
-            android:id="@+id/Alarm"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/device_border"
+
+        <ScrollView
+            android:id="@+id/scroll_alarm"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="500dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintTop_toBottomOf="@id/name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="MissingConstraints"
             >
-
-            <ImageView
-                android:id="@+id/AlarmImage"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/alarm_linear"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/alarm_on"/>
+                android:orientation="vertical"
+                >
+                <!-- 등록된 알람 화면 -->
 
-            <TextView
-                android:id="@+id/Alarmnumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#0E5BDF"
-                android:text="12345"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="#FAFAFA"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginStart="25dp"
-                android:layout_toRightOf="@id/AlarmImage"/>
+            </LinearLayout>
 
-
-            <TextView
-                android:id="@+id/register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="오전 9 : 00"
-                android:textSize="20sp"
-                android:textColor="#0E5BDF"
-                android:layout_below="@id/Alarmnumber"
-                android:layout_alignLeft="@id/Alarmnumber"
-                />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5월 26일"
-                android:textSize="18sp"
-                android:textColor="#0E5BDF"
-                app:switchPadding="15dp"
-                app:switchMinWidth="55dp"
-                android:layout_marginRight="10dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:checked="true"
-                app:thumbTint="#FFFFFF"
-                app:track="@drawable/selector_switch"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-        </RelativeLayout>
+        </ScrollView>
 
 
         <!-- 하단바 -->
