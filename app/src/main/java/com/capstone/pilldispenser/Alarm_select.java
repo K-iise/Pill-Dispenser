@@ -42,6 +42,7 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
     private static final int REQUEST_CODE_SCHEDULE_EXACT_ALARM = 1;
     private LinearLayout linearLayout;
     private String userId;
+    private String deviceNumber;
     DrawerLayout drawer;
 
     // 회원명, 현재 시간 표시에 쓰는 변수들.
@@ -69,6 +70,7 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
 
         // 이전 화면으로부터 데이터 받아오기
         userId = getIntent().getStringExtra("userId");
+        deviceNumber = getIntent().getStringExtra("deviceNumber");
 
         // activity_main.xml에서 ScrollView 안의 LinearLayout을 참조
         linearLayout = findViewById(R.id.alarm_linear);
@@ -104,8 +106,25 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(Alarm_select.this, Alarm_delete.class);
                 intent.putExtra("userId", userId);
                 intent.putExtra("userName", userName);
+                intent.putExtra("deviceNumber", deviceNumber);
                 startActivity(intent);
 
+            }
+        });
+
+        // 알람 생성 버튼 생성.
+        ImageButton add = (ImageButton) findViewById(R.id.add);
+
+        // 알람 생성 버튼 클릭 이벤트
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Alarm_setting 액티비티로 전달할 Intent 생성
+                Intent intent = new Intent(Alarm_select.this, Alarm_setting.class);
+                intent.putExtra("userId", userId);
+                intent.putExtra("userName", userName);
+                intent.putExtra("deviceNumber", deviceNumber);
+                startActivity(intent);
             }
         });
 

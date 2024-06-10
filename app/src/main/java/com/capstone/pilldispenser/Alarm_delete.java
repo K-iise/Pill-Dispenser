@@ -263,7 +263,6 @@ public class Alarm_delete extends AppCompatActivity implements NavigationView.On
         return dateFormat.format(date);
     }
 
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         // 액티비티가 종료될 때 Handler의 Runnable 제거

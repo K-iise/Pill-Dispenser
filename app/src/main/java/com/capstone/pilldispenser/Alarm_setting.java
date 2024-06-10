@@ -2,6 +2,7 @@ package com.capstone.pilldispenser;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,14 +22,26 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.Locale;
+import android.util.Log;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import android.os.AsyncTask;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public class Alarm_setting extends AppCompatActivity {
 
@@ -51,10 +65,67 @@ public class Alarm_setting extends AppCompatActivity {
     private ToggleButton toggleButtonMon, toggleButtonTue, toggleButtonWed, toggleButtonThu,
             toggleButtonFri, toggleButtonSat, toggleButtonSun;
 
+    private String deviceNumber;
+    private String userId;
+
+    private String userName;
+
+    LinkedList<EditText> pillscoreList = new LinkedList<>();
+    LinkedList<Spinner> spinnerList = new LinkedList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_setting);
+
+        // Device_register.java에서 기계 번호 받아오기
+        deviceNumber = getIntent().getStringExtra("deviceNumber");
+
+        // loginui.java에서 사용자 아이디 받아오기
+        userId = getIntent().getStringExtra("userId");
+        userName = getIntent().getStringExtra("userName");
+        Button confirmButton = findViewById(R.id.check_button);
+
+        EditText pillScore = findViewById(R.id.pill_score);
+        pillscoreList.add(pillScore);
+
+        Spinner spinnered = findViewById(R.id.gender_spinner);
+        spinnerList.add(spinnered);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 사용자가 입력한 값 받아오기
+                String alarmNumber = getNewAlarmNumber();
+                String alarmTime = getAlarmTime();
+                String alarmDateWithDays = getAlarmDate();
+
+                Log.d("Alarm_setAlarm", "deviceNumber: " + deviceNumber);
+                Log.d("Alarm_setAlarm", "Alarm Time: " + alarmTime);
+                Log.d("Alarm_setAlarm", "Alarm Date With Days: " + alarmDateWithDays);
+                Log.d("Alarm_setAlarm", "quantity: " + pillScore.getText().toString());
+                Log.d("Alarm_setAlarm", "userId: " + userId);
+
+                // pillscoreList와 spinnerList의 크기가 같다고 가정합니다.
+                for (int i = 0; i < pillscoreList.size(); i++) {
+                    String quantity = pillscoreList.get(i).getText().toString();
+                    String pillBoxNumber = spinnerList.get(i).getSelectedItem().toString().substring(4);
+                    new InsertAlarm().execute(pillBoxNumber, deviceNumber, alarmTime, alarmDateWithDays, userId, "1", quantity);
+                }
+
+                // new InsertAlarm().execute("1", "2", "16677", alarmTime, alarmDateWithDays, userId, "1", pillScore.getText().toString());*/
+
+                //알람 조회 메뉴 클릭 시 Alarm_select 액티비티로 이동하면서 userId 전달
+               Intent intent = new Intent(Alarm_setting.this, Alarm_select.class);
+                intent.putExtra("userId", userId);
+                intent.putExtra("userName", userName);
+                intent.putExtra("deviceNumber", deviceNumber);
+                startActivity(intent);
+
+                //new InsertAlarm().execute(alarmNumber, pillBoxNumber, machineNumber, alarmTime, alarmDateWithDays, userId, "1", quantity);
+                //sendDataToServer(alarmNumber, pillNumber, machineNumber, alarmTime, alarmDateWithDays, userId);
+            }
+        });
+
 
         TimePicker timePicker = findViewById(R.id.timePicker);
         dayTextView = findViewById(R.id.daytextView);
@@ -92,6 +163,7 @@ public class Alarm_setting extends AppCompatActivity {
             }
         });
 
+
         // 시간 변경 리스너 설정
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
@@ -104,8 +176,8 @@ public class Alarm_setting extends AppCompatActivity {
             }
         });
 
-        // 유준 추가 부분. //
 
+        // 유준 추가 부분. //
 
         // XML에서 정의한 뷰들을 참조하여 변수에 할당
         mRingtoneLayout = this.findViewById(R.id.music_layout);
@@ -157,6 +229,8 @@ public class Alarm_setting extends AppCompatActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 View customView = inflater.inflate(R.layout.storage_setting, null);
 
+                pillscoreList.add(customView.findViewById(R.id.pill_score));
+
                 // 마진 설정 (left, top, right, bottom 순서로 dp 값 변환 후 설정)
                 int marginInDp = 20; // 원하는 마진 값을 dp 단위로 설정
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -187,6 +261,8 @@ public class Alarm_setting extends AppCompatActivity {
                     }
                 });
 
+                spinnerList.add(customView.findViewById(R.id.gender_spinner));
+
                 // 생성된 뷰를 버튼 위로 추가
                 int buttonIndex = scroll.indexOfChild(addButton);
                 scroll.addView(customView, buttonIndex);
@@ -198,8 +274,6 @@ public class Alarm_setting extends AppCompatActivity {
                 }
             }
         });
-
-
 
     }
 
@@ -437,4 +511,75 @@ public class Alarm_setting extends AppCompatActivity {
                 return "";
         }
     }
+
+    private String getNewAlarmNumber() {
+        // 여기서 알람 번호를 생성합니다. (예시로 1부터 증가하는 방식)
+        // 실제 구현에서는 SharedPreferences나 DB를 사용해 고유 번호를 생성해야 합니다.
+        return String.valueOf(getNextAlarmId());
+    }
+
+    private int getNextAlarmId() {
+        // 예를 들어, SharedPreferences를 사용해 고유 알람 ID를 관리할 수 있습니다.
+        SharedPreferences prefs = getSharedPreferences("alarms", MODE_PRIVATE);
+        int nextId = prefs.getInt("nextAlarmId", 1);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("nextAlarmId", nextId + 1);
+        editor.apply();
+        return nextId;
+    }
+
+
+    private String getAlarmTime() {
+        TimePicker timePicker = findViewById(R.id.timePicker);
+        int hour = timePicker.getHour();
+        int minute = timePicker.getMinute();
+        return String.format("%02d:%02d", hour, minute);
+    }
+
+    private String getAlarmDate() {
+        TextView dayTextView = findViewById(R.id.daytextView);
+        String dayText = dayTextView.getText().toString();
+
+        // 예시 텍스트: "오늘-6월 3일 (월)"
+        String[] parts = dayText.split("-");
+        String datePart = parts[1].trim();  // "6월 3일 (월)"
+
+        // 날짜 파싱
+        String[] dateParts = datePart.split(" ");
+        String monthPart = dateParts[0].replace("월", "");
+        String dayPart = dateParts[1].replace("일", "").replace("(", "").replace(")", "");
+
+        int month = Integer.parseInt(monthPart);
+        int day = Integer.parseInt(dayPart);
+
+        // 현재 연도 가져오기
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+
+        return String.format("%04d-%02d-%02d", year, month, day);
+    }
+
+
+
+    private class InsertAlarm extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String pillBoxNumber = params[0];
+            String machineNumber = params[1];
+            String alarmTime = params[2];
+            String alarmDate = params[3];
+            String userId = params[4];
+            String hasTaken = params[5];
+            String quantity = params[6];
+            String url = "http://61.79.73.178:8080/PillJSP/Android/InsertAlarm.jsp?pillBoxNumber=" + pillBoxNumber + "&machineNumber="
+                    + machineNumber + "&alarmTime=" + alarmTime + "&alarmDate=" + alarmDate + "&userId=" + userId + "&hasTaken="+ hasTaken + "&quantity=" + quantity;
+            Log.d("InsertAlarm", "URL: " + url); // URL 로그 출력
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(url);
+            Log.d("InsertAlarm", "Response: " + response); // 응답 로그 출력
+            return response;
+        }
+
+    }
+
 }

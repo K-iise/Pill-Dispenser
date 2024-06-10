@@ -252,6 +252,7 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(this, Alarm_select.class);
             intent.putExtra("userId", userId);
             intent.putExtra("userName", userName);
+            intent.putExtra("deviceNumber", deviceNumber);
             startActivity(intent);
             // 추가 작업을 여기에 작성 (예: 새로운 액티비티 시작)
         } else if (itemId == R.id.menu_record) {

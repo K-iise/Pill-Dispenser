@@ -45,6 +45,7 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
     private TextView memberTimeTextView;
     private Handler handler;
     private String userName;
+    String deviceNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +73,7 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
         deviceNameTextView = findViewById(R.id.devicenamp);
 
         // 이전 화면으로부터 데이터 받아오기
-        String deviceNumber = getIntent().getStringExtra("deviceNumber");
+        deviceNumber = getIntent().getStringExtra("deviceNumber");
         String deviceName = getIntent().getStringExtra("deviceName");
 
         // 받아온 데이터를 TextView에 설정
@@ -247,6 +248,7 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
             Intent intent = new Intent(this, Alarm_select.class);
             intent.putExtra("userId", userId);
             intent.putExtra("userName", userName);
+            intent.putExtra("deviceNumber", deviceNumber);
             startActivity(intent);
             // 추가 작업을 여기에 작성 (예: 새로운 액티비티 시작)
         } else if (itemId == R.id.menu_record) {
