@@ -112,8 +112,7 @@
                 />
 
             <ImageButton
-                android:id="@+id/
-"
+                android:id="@+id/check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/check_blue"
