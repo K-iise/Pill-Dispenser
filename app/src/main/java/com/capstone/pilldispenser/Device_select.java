@@ -2,8 +2,10 @@ package com.capstone.pilldispenser;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,6 +37,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
+import java.util.Locale;
 
 import com.capstone.pilldispenser.R;
 
@@ -47,6 +51,11 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
     private String deviceName;
     DrawerLayout drawer;
     private String userId;
+
+    // 회원명, 현재 시간 표시에 쓰는 변수들.
+    private TextView memberTimeTextView;
+    private Handler handler;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,19 +88,6 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
 
         new GetDeviceInfo().execute(userId);
 
-/*        // RelativeLayout 클릭 이벤트 설정
-        deviceLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 클릭 이벤트 발생 시 Pill_select 액티비티로 이동
-                Intent intent = new Intent(Device_select.this, Pill_select.class);
-                intent.putExtra("deviceNumber", deviceNumber);
-                intent.putExtra("deviceName", deviceName);
-                startActivity(intent);
-            }
-        });*/
-
-
         // 기기 삭제 Button 생성.
         ImageButton deleteButton = (ImageButton) findViewById(R.id.action_delete);
 
@@ -102,6 +98,7 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
                 // Device_delete 액티비티로 전달할 Intent 생성
                 Intent intent = new Intent(Device_select.this, Device_delete.class);
                 intent.putExtra("userId", userId);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
             }
         });
@@ -119,6 +116,17 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
             }
         });
 
+        // 회원명, 현재 시간 표시
+        new GetUserName().execute(userId);
+
+        // TextView 찾기
+        memberTimeTextView = findViewById(R.id.membertime);
+
+        // Handler 생성
+        handler = new Handler();
+
+        // Runnable 생성 및 실행
+        handler.post(updateTimeRunnable);
 
     }
 
@@ -201,6 +209,8 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
         Intent intent = new Intent(this, Pill_select.class);
         intent.putExtra("deviceNumber", deviceNumber);
         intent.putExtra("deviceName", deviceName);
+        intent.putExtra("userId", userId);
+        intent.putExtra("userName", userName);
         startActivity(intent);
 
     }
@@ -229,6 +239,7 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
         // add_button 클릭 시 Device_register 액티비티로 이동하면서 userId 전달
         Intent intent = new Intent(Device_select.this, Device_register.class);
         intent.putExtra("userId", userId);
+        intent.putExtra("userName", userName);
         startActivity(intent);
 
     }
@@ -240,6 +251,7 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
             // 알람 조회 메뉴 클릭 시 Alarm_select 액티비티로 이동하면서 userId 전달
             Intent intent = new Intent(this, Alarm_select.class);
             intent.putExtra("userId", userId);
+            intent.putExtra("userName", userName);
             startActivity(intent);
             // 추가 작업을 여기에 작성 (예: 새로운 액티비티 시작)
         } else if (itemId == R.id.menu_record) {
@@ -252,6 +264,61 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
         }
         drawer.closeDrawer(Gravity.LEFT);
         return true;
+    }
+
+    // Runnable 정의
+    private final Runnable updateTimeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // 현재 시간 가져오기
+            String currentTime = getCurrentTime();
+
+            // 텍스트 설정
+            String memberTimeText = userName + "님. " + currentTime;
+            memberTimeTextView.setText(memberTimeText);
+
+            // 다음 업데이트를 위해 Handler에 Runnable 재등록 (일정 시간 간격으로 반복)
+            handler.postDelayed(this, 1000); // 1초마다 업데이트
+        }
+    };
+
+    // 현재 시간을 가져오는 메서드
+    private String getCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd (HH:mm:ss)", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 액티비티가 종료될 때 Handler의 Runnable 제거
+        handler.removeCallbacks(updateTimeRunnable);
+    }
+
+    // DB에서 로그인된 회원의 이름을 가져오는 함수
+    private class GetUserName extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String userId = params[0];
+            String url = "http://61.79.73.178:8080/PillJSP/Android/getuserName.jsp?userId=" + userId;
+            Log.d("GetUserName", "URL: " + url); // URL 로그 출력
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(url);
+            Log.d("GetUserName", "Response: " + response); // 응답 로그 출력
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                userName = jsonObject.getString("userName");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

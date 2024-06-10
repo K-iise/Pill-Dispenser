@@ -1,8 +1,17 @@
 package com.capstone.pilldispenser;
 
+import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,13 +21,12 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
@@ -26,13 +34,20 @@ import com.google.android.material.navigation.NavigationView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Date;
+import java.util.Locale;
+
 public class Alarm_select extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int REQUEST_CODE_SCHEDULE_EXACT_ALARM = 1;
     private LinearLayout linearLayout;
-
     private String userId;
-
     DrawerLayout drawer;
+
+    // 회원명, 현재 시간 표시에 쓰는 변수들.
+    private TextView memberTimeTextView;
+    private Handler handler;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,31 +55,74 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_alarm_select);
 
         // Menu Button, Drawer 생성
-        ImageButton menuButton = (ImageButton) findViewById(R.id.action_ham);
-        drawer = (DrawerLayout) findViewById(R.id.drawer);
+        ImageButton menuButton = findViewById(R.id.action_ham);
+        drawer = findViewById(R.id.drawer);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // 메뉴바 클릭 이벤트(Drawer 출력)
-        menuButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                if (!drawer.isDrawerOpen(Gravity.LEFT)) {
-                    drawer.openDrawer(Gravity.LEFT) ;
-                }
+        menuButton.setOnClickListener(v -> {
+            if (!drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.openDrawer(GravityCompat.START);
             }
         });
-
 
         // 이전 화면으로부터 데이터 받아오기
         userId = getIntent().getStringExtra("userId");
 
         // activity_main.xml에서 ScrollView 안의 LinearLayout을 참조
-        linearLayout = (LinearLayout) findViewById(R.id.alarm_linear);
+        linearLayout = findViewById(R.id.alarm_linear);
 
-        new GetAlarmInfo().execute(userId);
+        // 권한 요청
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SCHEDULE_EXACT_ALARM) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SCHEDULE_EXACT_ALARM}, REQUEST_CODE_SCHEDULE_EXACT_ALARM);
+        } else {
+            new GetAlarmInfo().execute(userId);
+        }
+
+        // 회원명, 현재 시간 표시
+        userName = getIntent().getStringExtra("userName");
+
+        // TextView 찾기
+        memberTimeTextView = findViewById(R.id.membertime);
+
+        // Handler 생성
+        handler = new Handler();
+
+        // Runnable 생성 및 실행
+        handler.post(updateTimeRunnable);
+
+        // 알람 삭제 버튼 생성.
+        ImageButton option = (ImageButton) findViewById(R.id.option);
+
+        // 알람 삭제 버튼 클릭 이벤트.
+        option.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Alarm_delete 액티비티로 전달할 Intent 생성
+                Intent intent = new Intent(Alarm_select.this, Alarm_delete.class);
+                intent.putExtra("userId", userId);
+                intent.putExtra("userName", userName);
+                startActivity(intent);
+
+            }
+        });
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_SCHEDULE_EXACT_ALARM) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                new GetAlarmInfo().execute(userId);
+            } else {
+                Log.e("Alarm_select", "Permission denied to schedule exact alarms");
+            }
+        }
+    }
+
     private class GetAlarmInfo extends AsyncTask<String, Void, String> {
 
         @Override
@@ -77,6 +135,7 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
             Log.d("GetAlarmInfo", "Response: " + response); // 응답 로그 출력
             return response;
         }
+
         @Override
         protected void onPostExecute(String result) {
             try {
@@ -88,6 +147,10 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
                     String Alarmday = jsonObject.getString("Alarmday");
 
                     addAlarmView(Devicenumber, Alarmtime, Alarmday);
+
+                    // 알람 설정
+                    Log.d("Alarm_setAlarm", "Setting alarm for: " + Alarmday + " " + Alarmtime);
+                    setAlarm(Alarmday, Alarmtime, i);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -97,7 +160,7 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
 
     private void addAlarmView(String Devicenumber, String Alarmtime, String Alarmday) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        View alarmView = inflater.inflate(R.layout.alarm_bring,null);
+        View alarmView = inflater.inflate(R.layout.alarm_bring, null);
 
         TextView devicenumber = alarmView.findViewById(R.id.Devicenumber);
         TextView alarmtime = alarmView.findViewById(R.id.Alarmtime);
@@ -128,18 +191,94 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
             // 알람 조회 메뉴 클릭 시 Alarm_select 액티비티로 이동하면서 userId 전달
             Intent intent = new Intent(this, Alarm_select.class);
             intent.putExtra("userId", userId);
+            intent.putExtra("userName", userName);
             startActivity(intent);
             // 추가 작업을 여기에 작성 (예: 새로운 액티비티 시작)
         } else if (itemId == R.id.menu_record) {
             // 추가 작업을 여기에 작성
         } else if (itemId == R.id.menu_logout) {
-
             Intent intent = new Intent(this, LoginUI.class);
             startActivity(intent);
             // 추가 작업을 여기에 작성 (예: 로그아웃 기능)
         }
-        drawer.closeDrawer(Gravity.LEFT);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void setAlarm(String alarmDay, String alarmTime, int alarmIndex) {
+        // 알람 시간을 파싱하기 위한 날짜 형식 설정
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        try {
+            // 알람 날짜와 시간을 결합하여 파싱
+            Date date = dateFormat.parse(alarmDay + " " + alarmTime);
+            if (date != null) {
+                // Calendar 객체에 파싱된 날짜와 시간 설정
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+
+                // 현재 시간이 이미 지난 경우, 알람을 다음 날로 설정
+                if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+                    calendar.add(Calendar.DAY_OF_YEAR, 1);
+                }
+
+                // AlarmManager 객체 가져오기
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                // 알람이 발생했을 때 실행할 Intent 생성
+                Intent intent = new Intent(this, AlarmReceiver.class);
+                intent.putExtra("time", alarmTime);
+
+                // PendingIntent 생성: 알람이 발생할 때 실행될 인텐트
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarmIndex, intent, PendingIntent.FLAG_IMMUTABLE);
+
+                // AlarmManager가 null이 아닌지 확인
+                if (alarmManager != null) {
+                    // 정확한 알람 설정이 가능한지 확인
+                    if (alarmManager.canScheduleExactAlarms()) {
+                        // 정확한 시간에 알람 설정 (RTC_WAKEUP은 장치를 깨운다)
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                        Log.d("Alarm_setAlarm", "Alarm set for: " + calendar.getTime().toString());
+                    } else {
+                        // 정확한 알람 설정이 불가능한 경우에 대한 처리
+                        Log.e("Alarm_setAlarm", "Cannot schedule exact alarms");
+                    }
+                }
+            }
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Runnable 정의
+    private final Runnable updateTimeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // 현재 시간 가져오기
+            String currentTime = getCurrentTime();
+
+            // 텍스트 설정
+            String memberTimeText = userName + "님. " + currentTime;
+            memberTimeTextView.setText(memberTimeText);
+
+            // 다음 업데이트를 위해 Handler에 Runnable 재등록 (일정 시간 간격으로 반복)
+            handler.postDelayed(this, 1000); // 1초마다 업데이트
+        }
+    };
+
+    // 현재 시간을 가져오는 메서드
+    private String getCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd (HH:mm:ss)", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 액티비티가 종료될 때 Handler의 Runnable 제거
+        handler.removeCallbacks(updateTimeRunnable);
+    }
+
+
 
 }

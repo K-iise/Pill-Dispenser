@@ -115,7 +115,7 @@
         <!-- 알약 상세 조회 뷰 -->
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             tools:ignore="MissingConstraints"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"

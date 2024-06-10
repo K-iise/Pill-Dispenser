@@ -1,8 +1,10 @@
 package com.capstone.pilldispenser;
 
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,6 +30,9 @@ import org.json.JSONObject;
 import com.capstone.pilldispenser.HttpHandler;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Date;
+import java.util.Locale;
+
 public class Pill_select extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private LinearLayout linearLayout;
     private TextView deviceNumberTextView;
@@ -35,6 +40,11 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
     private String pillNumber;
     DrawerLayout drawer;
     private String userId;
+
+    // 회원명, 현재 시간 표시에 쓰는 변수들.
+    private TextView memberTimeTextView;
+    private Handler handler;
+    private String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +64,9 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
                 }
             }
         });
+
+        // 이전 화면으로부터 데이터 받아오기
+        userId = getIntent().getStringExtra("userId");
 
         deviceNumberTextView = findViewById(R.id.devicenump);
         deviceNameTextView = findViewById(R.id.devicenamp);
@@ -93,10 +106,11 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
                 String deviceNumber = DeviceNumberView.getText().toString();
                 String deviceName = DeviceNameView.getText().toString();
 
-                // Pill_select 액티비티로 전달할 Intent 생성
+                // Pill_delete 액티비티로 전달할 Intent 생성
                 Intent intent = new Intent(Pill_select.this, Pill_delete.class);
                 intent.putExtra("deviceNumber", deviceNumber);
                 intent.putExtra("deviceName", deviceName);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
 
             }
@@ -109,10 +123,23 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
                 // 약품 추가 버튼 클릭 시 처리할 내용
                 Intent intent = new Intent(Pill_select.this, Pill_addition.class);
                 intent.putExtra("deviceNumber", deviceNumber);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
             }
         });
         ImageButton editButton = findViewById(R.id.optionbutton);
+
+        // 회원명, 현재 시간 표시
+        userName = getIntent().getStringExtra("userName");
+
+        // TextView 찾기
+        memberTimeTextView = findViewById(R.id.membertime);
+
+        // Handler 생성
+        handler = new Handler();
+
+        // Runnable 생성 및 실행
+        handler.post(updateTimeRunnable);
 
 
     }
@@ -140,7 +167,7 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
                     String pillName = jsonObject.getString("pillName");
                     String remainPill = jsonObject.getString("remainPill");
 
-                    addPillView(cabinetNumber, pillNumber, pillName, remainPill);
+                    addPillView(deviceNumberTextView.getText().toString(), cabinetNumber, pillNumber, pillName, remainPill);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -148,16 +175,16 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
         }
     }
 
-    private void addPillView(String cabinetNumber, String pillNumber, String pillName, String remainingPills) {
+    private void addPillView(String deviceNumber, String cabinetNumber, String pillNumber, String pillName, String remainingPills) {
         LayoutInflater inflater = LayoutInflater.from(this);
-        View pillView = inflater.inflate(R.layout.pill_bring,null);
+        View pillView = inflater.inflate(R.layout.pill_bring, null);
 
         TextView cabinetNumberView = pillView.findViewById(R.id.cabinet_number);
         TextView pillNumberView = pillView.findViewById(R.id.pill_number);
         TextView pillNameView = pillView.findViewById(R.id.pill_name);
         TextView remainPillView = pillView.findViewById(R.id.remain_pill);
 
-        cabinetNumberView.setText("약통번호" + cabinetNumber);
+        cabinetNumberView.setText("약통번호 " + cabinetNumber);
         pillNumberView.setText(pillNumber);
         pillNameView.setText(pillName);
         remainPillView.setText(remainingPills + "정");
@@ -172,6 +199,23 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
 
         // 뷰에 레이아웃 파라미터 설정
         pillView.setLayoutParams(layoutParams);
+
+        // RelativeLayout 찾기
+        RelativeLayout deviceLayout = pillView.findViewById(R.id.device);
+
+        // RelativeLayout 클릭 이벤트 설정
+        deviceLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Pill_select.this, Pill_edit.class);
+                intent.putExtra("deviceNumber", deviceNumber);
+                intent.putExtra("cabinetNumber", cabinetNumber);
+                intent.putExtra("pillNumber", pillNumber);
+                intent.putExtra("pillName", pillName);
+                intent.putExtra("remainingPills", remainingPills);
+                startActivity(intent);
+            }
+        });
 
         linearLayout.addView(pillView);
     }
@@ -189,7 +233,8 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
         // Pill_detail 액티비티로 전달할 Intent 생성
         Intent intent = new Intent(this, Pill_detail.class);
         intent.putExtra("pill_number", pillNumber);
-
+        intent.putExtra("userId", userId);
+        intent.putExtra("userName", userName);
         // Pill_detail 액티비티 시작
         startActivity(intent);
     }
@@ -201,6 +246,7 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
             // 알람 조회 메뉴 클릭 시 Alarm_select 액티비티로 이동하면서 userId 전달
             Intent intent = new Intent(this, Alarm_select.class);
             intent.putExtra("userId", userId);
+            intent.putExtra("userName", userName);
             startActivity(intent);
             // 추가 작업을 여기에 작성 (예: 새로운 액티비티 시작)
         } else if (itemId == R.id.menu_record) {
@@ -215,5 +261,34 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
         return true;
     }
 
+    // Runnable 정의
+    private final Runnable updateTimeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // 현재 시간 가져오기
+            String currentTime = getCurrentTime();
+
+            // 텍스트 설정
+            String memberTimeText = userName + "님. " + currentTime;
+            memberTimeTextView.setText(memberTimeText);
+
+            // 다음 업데이트를 위해 Handler에 Runnable 재등록 (일정 시간 간격으로 반복)
+            handler.postDelayed(this, 1000); // 1초마다 업데이트
+        }
+    };
+
+    // 현재 시간을 가져오는 메서드
+    private String getCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd (HH:mm:ss)", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 액티비티가 종료될 때 Handler의 Runnable 제거
+        handler.removeCallbacks(updateTimeRunnable);
+    }
 
 }

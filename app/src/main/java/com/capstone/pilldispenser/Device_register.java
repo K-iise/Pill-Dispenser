@@ -1,8 +1,10 @@
 package com.capstone.pilldispenser;
 
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +27,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Date;
+import java.util.Locale;
 
 public class Device_register extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,6 +36,11 @@ public class Device_register extends AppCompatActivity implements NavigationView
     private Button registerButton, duplicateCheckButton;
     private String userId;
     DrawerLayout drawer;
+
+    // 회원명, 현재 시간 표시에 쓰는 변수들.
+    private TextView memberTimeTextView;
+    private Handler handler;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +97,22 @@ public class Device_register extends AppCompatActivity implements NavigationView
             public void onClick(View v) {
                 Intent intent = new Intent(Device_register.this, Device_select.class);
                 intent.putExtra("userId", userId);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
             }
         });
+
+        // 회원명, 현재 시간 표시
+        userName = getIntent().getStringExtra("userName");
+
+        // TextView 찾기
+        memberTimeTextView = findViewById(R.id.membertime);
+
+        // Handler 생성
+        handler = new Handler();
+
+        // Runnable 생성 및 실행
+        handler.post(updateTimeRunnable);
 
 
     }
@@ -204,6 +227,7 @@ public class Device_register extends AppCompatActivity implements NavigationView
         }
     }
 
+    // DB에 기기 정보를 삽입하는 함수.
     private class InsertDeviceInfoTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -249,6 +273,7 @@ public class Device_register extends AppCompatActivity implements NavigationView
             // 알람 조회 메뉴 클릭 시 Alarm_select 액티비티로 이동하면서 userId 전달
             Intent intent = new Intent(this, Alarm_select.class);
             intent.putExtra("userId", userId);
+            intent.putExtra("userName", userName);
             startActivity(intent);
             // 추가 작업을 여기에 작성 (예: 새로운 액티비티 시작)
         } else if (itemId == R.id.menu_record) {
@@ -261,6 +286,36 @@ public class Device_register extends AppCompatActivity implements NavigationView
         }
         drawer.closeDrawer(Gravity.LEFT);
         return true;
+    }
+
+    // Runnable 정의
+    private final Runnable updateTimeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // 현재 시간 가져오기
+            String currentTime = getCurrentTime();
+
+            // 텍스트 설정
+            String memberTimeText = userName + "님. " + currentTime;
+            memberTimeTextView.setText(memberTimeText);
+
+            // 다음 업데이트를 위해 Handler에 Runnable 재등록 (일정 시간 간격으로 반복)
+            handler.postDelayed(this, 1000); // 1초마다 업데이트
+        }
+    };
+
+    // 현재 시간을 가져오는 메서드
+    private String getCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd (HH:mm:ss)", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 액티비티가 종료될 때 Handler의 Runnable 제거
+        handler.removeCallbacks(updateTimeRunnable);
     }
 
 

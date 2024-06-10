@@ -290,234 +290,31 @@
                             android:layout_height="wrap_content">
 
                             <TextView
+                                android:id="@+id/pillnum"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="0dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:textColor="#111111"
-                                android:background="@drawable/pill_addition_search"
-                                android:textSize="18dp" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:gravity="center"
-                                android:background="@drawable/pill_addition_search"
-                                android:textSize="18dp"
-                                android:textColor="#111111" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="18dp"
-                                android:background="@drawable/pill_addition_search"
-                                android:textColor="#111111" />
-                        </TableRow>
-
-                        <!-- 추가적인 행들을 여기에 추가합니다 -->
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="18dp"
-                                android:background="@drawable/pill_addition_search"
-                                android:textColor="#111111" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:gravity="center"
-                                android:textSize="18dp"
-                                android:background="@drawable/pill_addition_search"
-                                android:textColor="#111111" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="18dp"
-                                android:background="@drawable/pill_addition_search"
-                                android:textColor="#111111" />
-
-                        </TableRow>
-
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:background="@drawable/pill_addition_search"
                                 android:textColor="#111111"
                                 android:textSize="18dp" />
 
                             <TextView
+                                android:id="@+id/pillname"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:gravity="center"
-                                android:background="@drawable/pill_addition_search"
-                                android:textSize="18dp"
-                                android:textColor="#111111" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="18dp"
-                                android:background="@drawable/pill_addition_search"
-                                android:textColor="#111111" />
-
-                        </TableRow>
-
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="18dp"
-                                android:background="@drawable/pill_addition_search"
-                                android:textColor="#111111" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="0dp"
                                 android:layout_weight="2"
                                 android:gravity="center"
                                 android:textSize="18dp"
-                                android:background="@drawable/pill_addition_search"
                                 android:textColor="#111111" />
 
                             <TextView
+                                android:id="@+id/pillmade"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="0dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:textSize="18dp"
-                                android:background="@drawable/pill_addition_search"
                                 android:textColor="#111111" />
-
-                        </TableRow>
-
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="18dp"
-                                android:background="@drawable/pill_addition_search"
-                                android:textColor="#111111" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:gravity="center"
-                                android:textSize="18dp"
-                                android:background="@drawable/pill_addition_search"
-                                android:textColor="#111111" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="18dp"
-                                android:background="@drawable/pill_addition_search"
-                                android:textColor="#111111" />
-
-                        </TableRow>
-
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="18dp"
-
-                                android:textColor="#111111"
-                                android:text="12349" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:gravity="center"
-                                android:textSize="18dp"
-
-                                android:textColor="#111111"
-                                android:text="제품명5" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="18dp"
-
-                                android:textColor="#111111"
-                                android:text="회사명5" />
-
-                        </TableRow>
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="18dp"
-
-                                android:textColor="#111111"
-                                android:text="12349" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:gravity="center"
-                                android:textSize="18dp"
-
-                                android:textColor="#111111"
-                                android:text="제품명5" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:textSize="18dp"
-
-                                android:textColor="#111111"
-                                android:text="회사명5" />
 
                         </TableRow>
 
@@ -612,6 +409,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/storage_number"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
@@ -619,7 +417,7 @@
                                 android:textStyle="bold"
                                 android:background="@drawable/pill_addition_search"
                                 android:textColor="#111111"
-                                android:text="약통번호1" />
+                                android:text="" />
                         </LinearLayout>
 
                         <!-- 두 번째 TextView를 LinearLayout 안에 넣고, weight를 2로 설정합니다 -->
@@ -630,6 +428,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/pill_name_textview"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
@@ -637,7 +436,7 @@
                                 android:textStyle="bold"
                                 android:background="@drawable/pill_addition_search"
                                 android:textColor="#111111"
-                                android:text="경동아스피린장용정" />
+                                android:text="" />
                         </LinearLayout>
 
                         <!-- 세 번째 TextView를 LinearLayout 안에 넣고, weight를 1로 설정합니다 -->
@@ -648,6 +447,7 @@
                             android:orientation="horizontal">
 
                             <EditText
+                                android:id="@+id/quantity_edittext"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
@@ -655,7 +455,7 @@
                                 android:textStyle="bold"
                                 android:background="@drawable/pill_addition_search"
                                 android:textColor="#111111"
-                                android:text="100" />
+                                android:text="" />
                         </LinearLayout>
                     </TableRow>
 
@@ -663,7 +463,7 @@
 
                 <!-- 약품 추가 버튼 -->
                 <android.widget.Button
-                    android:id="@+id/add_button"
+                    android:id="@+id/modify_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="17dp"
