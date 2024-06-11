@@ -228,7 +228,10 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
         // DeviceName, DeviceNumber텍스트 가져오기
         deviceNumber = DeviceNumberView.getText().toString();
         deviceName = DeviceNameView.getText().toString();
-        connectBluetooth();
+
+        // 기기를 블루투스로 등록.
+        //connectBluetooth();
+
         // Pill_select 액티비티로 전달할 Intent 생성
         Intent intent = new Intent(this, Pill_select.class);
         intent.putExtra("deviceNumber", deviceNumber);

@@ -115,7 +115,7 @@ public class Alarm_setting extends AppCompatActivity {
                 // new InsertAlarm().execute("1", "2", "16677", alarmTime, alarmDateWithDays, userId, "1", pillScore.getText().toString());*/
 
                 //알람 조회 메뉴 클릭 시 Alarm_select 액티비티로 이동하면서 userId 전달
-               Intent intent = new Intent(Alarm_setting.this, Alarm_select.class);
+                Intent intent = new Intent(Alarm_setting.this, Alarm_select.class);
                 intent.putExtra("userId", userId);
                 intent.putExtra("userName", userName);
                 intent.putExtra("deviceNumber", deviceNumber);

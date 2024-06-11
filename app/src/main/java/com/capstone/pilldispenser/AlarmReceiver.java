@@ -60,7 +60,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         // Ringtone 재생
         ringtone.play();
         Log.d("AlarmReceiver", "Notification sound played");
-
+        new getPillQuantity().execute(deviceNumber, alarmTime, alarmDay, userId);
         // Alarm_Ringing 액티비티 시작
         Intent alarmRingingIntent = new Intent(context, Alarm_Ringing.class);
         alarmRingingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 새로운 태스크에서 액티비티 시작
@@ -73,8 +73,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (ringtone != null && ringtone.isPlaying()) {
             ringtone.stop();
             Log.d("AlarmReceiver", "Notification sound stopped");
-            Log.d("AlarmReceiverString", deviceMessage);
-            sendData(deviceMessage);
+            Log.d("AlarmReceiverString", "deviceMessage = " + deviceMessage);
+            //sendData(deviceMessage);
         }
     }
 

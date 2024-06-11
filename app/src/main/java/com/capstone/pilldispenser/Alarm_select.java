@@ -57,8 +57,6 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_select);
 
-
-
         // Menu Button, Drawer 생성
         ImageButton menuButton = findViewById(R.id.action_ham);
         drawer = findViewById(R.id.drawer);
@@ -168,12 +166,15 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
                     String Devicenumber = jsonObject.getString("Devicenumber");
                     String Alarmtime = jsonObject.getString("Alarmtime");
                     String Alarmday = jsonObject.getString("Alarmday");
+                    int hasTaken = jsonObject.getInt("hasTaken");
 
-                    addAlarmView(Devicenumber, Alarmtime, Alarmday);
+                    if(hasTaken == 1) {
+                        addAlarmView(Devicenumber, Alarmtime, Alarmday);
+                        // 알람 설정
+                        Log.d("Alarm_setAlarm", "Setting alarm for: " + Alarmday + " " + Alarmtime);
+                        setAlarm(Alarmday, Alarmtime, i);
+                    }
 
-                    // 알람 설정
-                    Log.d("Alarm_setAlarm", "Setting alarm for: " + Alarmday + " " + Alarmtime);
-                    setAlarm(Alarmday, Alarmtime, i);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

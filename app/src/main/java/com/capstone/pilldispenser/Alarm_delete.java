@@ -124,8 +124,12 @@ public class Alarm_delete extends AppCompatActivity implements NavigationView.On
                     String Devicenumber = jsonObject.getString("Devicenumber");
                     String Alarmtime = jsonObject.getString("Alarmtime");
                     String Alarmday = jsonObject.getString("Alarmday");
+                    int hasTaken = jsonObject.getInt("hasTaken");
 
-                    addAlarmView(Devicenumber, Alarmtime, Alarmday);
+                    if(hasTaken == 1) {
+                        addAlarmView(Devicenumber, Alarmtime, Alarmday);
+                    }
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
