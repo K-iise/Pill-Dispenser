@@ -30,6 +30,8 @@ import org.json.JSONObject;
 import com.capstone.pilldispenser.HttpHandler;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
 
@@ -46,10 +48,13 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
     private Handler handler;
     private String userName;
     String deviceNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pill_select);
+
+
 
         // Menu Button, Drawer 생성
         ImageButton menuButton = (ImageButton) findViewById(R.id.action_ham);
@@ -141,6 +146,20 @@ public class Pill_select extends AppCompatActivity implements NavigationView.OnN
 
         // Runnable 생성 및 실행
         handler.post(updateTimeRunnable);
+
+
+        // 새로 고침 버튼 및 이벤트.
+        ImageButton refreshButton = findViewById(R.id.action_return);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 현재 액티비티를 다시 시작하여 새로고침
+                Intent intent = getIntent();
+                finish(); // 현재 액티비티 종료
+                startActivity(intent); // 새로 시작하여 새로고침
+            }
+        });
+
 
 
     }

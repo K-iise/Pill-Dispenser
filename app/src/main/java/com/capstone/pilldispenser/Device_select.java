@@ -1,5 +1,11 @@
 package com.capstone.pilldispenser;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.content.pm.PackageManager;
+import java.io.ByteArrayOutputStream;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
@@ -11,6 +17,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,6 +29,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -35,15 +45,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.Locale;
-
+import java.util.UUID;
 import com.capstone.pilldispenser.R;
 
 public class Device_select extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
 
     private LinearLayout linearLayout;
     private RelativeLayout deviceLayout;
@@ -51,17 +61,31 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
     private String deviceName;
     DrawerLayout drawer;
     private String userId;
+    byte[] byteArray;
 
     // 회원명, 현재 시간 표시에 쓰는 변수들.
     private TextView memberTimeTextView;
     private Handler handler;
     private String userName;
 
+    // 블루투스 추가 부분.
+    private static final String TAG = "pilldispenser";
+    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"); // HC-06 UUID
+    private static final String DEVICE_ADDRESS = "98:DA:60:0A:F9:F4"; // HC-06 MAC 주소 (HC-06 모듈의 실제 MAC 주소로 바꿔야 합니다)
+
+    private static final int BLUETOOTH_PERMISSION_REQUEST_CODE = 1;
+
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothSocket bluetoothSocket;
+    private OutputStream outputStream;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_select);
 
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         
         // Menu Button, Drawer 생성
         ImageButton menuButton = (ImageButton) findViewById(R.id.action_ham);
@@ -204,7 +228,7 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
         // DeviceName, DeviceNumber텍스트 가져오기
         deviceNumber = DeviceNumberView.getText().toString();
         deviceName = DeviceNameView.getText().toString();
-
+        connectBluetooth();
         // Pill_select 액티비티로 전달할 Intent 생성
         Intent intent = new Intent(this, Pill_select.class);
         intent.putExtra("deviceNumber", deviceNumber);
@@ -257,6 +281,11 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
             // 추가 작업을 여기에 작성 (예: 새로운 액티비티 시작)
         } else if (itemId == R.id.menu_record) {
             // 추가 작업을 여기에 작성
+            // 복용 기록 조회 메뉴 클릭 시 Pill_record 액티비티로 이동하면서 userId 전달
+            Intent intent = new Intent(this, Pill_record.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
+
         } else if (itemId == R.id.menu_logout) {
 
             Intent intent = new Intent(this, LoginUI.class);
@@ -321,6 +350,60 @@ public class Device_select extends AppCompatActivity implements NavigationView.O
             }
         }
     }
+
+    private void connectBluetooth() {
+        // 블루투스 권한 확인
+        if (checkBluetoothPermission()) {
+            // 블루투스 연결 시도
+            BluetoothDevice device = bluetoothAdapter.getRemoteDevice(DEVICE_ADDRESS);
+            try {
+                bluetoothSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
+                bluetoothSocket.connect();
+                outputStream = bluetoothSocket.getOutputStream();
+                MyApplication app = (MyApplication) getApplication();
+                app.setOutputStream(outputStream);
+                Toast.makeText(this, "Bluetooth Connected", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                Log.e(TAG, "Error connecting to Bluetooth device", e);
+                Toast.makeText(this, "Bluetooth Connection Failed", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            } catch (Exception ex) {
+                Log.e(TAG, "Error connecting to Bluetooth device", ex);
+                Toast.makeText(this, "Bluetooth Connection Failed", Toast.LENGTH_SHORT).show();
+                ex.printStackTrace();
+            }
+        }
+    }
+
+
+    // 블루투스 권한 확인 및 요청
+    private boolean checkBluetoothPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+            // 블루투스 권한이 없는 경우 권한 요청
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.BLUETOOTH}, BLUETOOTH_PERMISSION_REQUEST_CODE);
+            return false;
+        } else {
+            // 블루투스 권한이 있는 경우
+            return true;
+        }
+    }
+
+    // onRequestPermissionsResult() 메서드에서 권한 처리
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == BLUETOOTH_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 블루투스 권한 허용됨
+                // 블루투스 연결 시도
+                connectBluetooth();
+            } else {
+                // 블루투스 권한 거부됨
+                // 사용자에게 권한 요청에 대한 설명 표시 또는 다른 조치 수행
+            }
+        }
+    }
+
 
 
 

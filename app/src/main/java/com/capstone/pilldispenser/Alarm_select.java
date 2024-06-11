@@ -34,6 +34,8 @@ import com.google.android.material.navigation.NavigationView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
 
@@ -54,6 +56,8 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_select);
+
+
 
         // Menu Button, Drawer 생성
         ImageButton menuButton = findViewById(R.id.action_ham);
@@ -245,7 +249,10 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
 
                 // 알람이 발생했을 때 실행할 Intent 생성
                 Intent intent = new Intent(this, AlarmReceiver.class);
-                intent.putExtra("time", alarmTime);
+                intent.putExtra("alarmDay", alarmDay);
+                intent.putExtra("alarmTime",alarmTime);
+                intent.putExtra("deviceNumber",deviceNumber);
+                intent.putExtra("userId",userId);
 
                 // PendingIntent 생성: 알람이 발생할 때 실행될 인텐트
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarmIndex, intent, PendingIntent.FLAG_IMMUTABLE);

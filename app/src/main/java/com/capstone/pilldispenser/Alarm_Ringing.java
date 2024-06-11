@@ -33,10 +33,18 @@ public class Alarm_Ringing extends AppCompatActivity {
                 // AlarmReceiver에서 재생 중인 ringtone을 중지시킴
                 AlarmReceiver.stopAlarm();
                 onBackPressed();
-            }
 
+
+            }
 
         });
     }
+
+
+
+
+
+
+
 
 }
