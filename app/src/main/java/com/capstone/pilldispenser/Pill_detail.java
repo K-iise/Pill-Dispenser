@@ -40,6 +40,7 @@ public class Pill_detail extends AppCompatActivity implements NavigationView.OnN
 
     DrawerLayout drawer;
     private String userId;
+    private String deviceNumber;
 
     // 회원명, 현재 시간 표시에 쓰는 변수들.
     private TextView memberTimeTextView;
@@ -69,6 +70,9 @@ public class Pill_detail extends AppCompatActivity implements NavigationView.OnN
 
         // 이전 화면으로부터 데이터 받아오기
         userId = getIntent().getStringExtra("userId");
+        deviceNumber = getIntent().getStringExtra("deviceNumber");
+        // 회원명, 현재 시간 표시
+        userName = getIntent().getStringExtra("userName");
 
         pillNumber = getIntent().getStringExtra("pill_number");
         new getPillDetails().execute(pillNumber);
@@ -121,8 +125,6 @@ public class Pill_detail extends AppCompatActivity implements NavigationView.OnN
             }
         });
 
-        // 회원명, 현재 시간 표시
-        userName = getIntent().getStringExtra("userName");
 
         // TextView 찾기
         memberTimeTextView = findViewById(R.id.membertime);
@@ -184,10 +186,14 @@ public class Pill_detail extends AppCompatActivity implements NavigationView.OnN
             Intent intent = new Intent(this, Alarm_select.class);
             intent.putExtra("userId", userId);
             intent.putExtra("userName", userName);
+            intent.putExtra("deviceNumber", deviceNumber);
             startActivity(intent);
             // 추가 작업을 여기에 작성 (예: 새로운 액티비티 시작)
         } else if (itemId == R.id.menu_record) {
             // 추가 작업을 여기에 작성
+            // 복용 기록 조회 메뉴 클릭 시 Pill_record 액티비티로 이동하면서 userId 전달
+            Intent intent = new Intent(this, Pill_record.class);
+            intent.putExtra("userId", userId);
         } else if (itemId == R.id.menu_logout) {
 
             Intent intent = new Intent(this, LoginUI.class);

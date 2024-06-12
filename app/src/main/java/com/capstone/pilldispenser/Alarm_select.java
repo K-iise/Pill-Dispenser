@@ -130,6 +130,23 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        // 새로 고침 Button 생성.
+        ImageButton returnButton = (ImageButton) findViewById(R.id.action_return);
+
+        // 새로 고침 클릭 메소드.
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = getIntent();
+                intent.putExtra("userId", userId);
+                intent.putExtra("userName", userName);
+                intent.putExtra("deviceNumber", deviceNumber);
+                finish();
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override
@@ -220,6 +237,10 @@ public class Alarm_select extends AppCompatActivity implements NavigationView.On
             // 추가 작업을 여기에 작성 (예: 새로운 액티비티 시작)
         } else if (itemId == R.id.menu_record) {
             // 추가 작업을 여기에 작성
+            // 복용 기록 조회 메뉴 클릭 시 Pill_record 액티비티로 이동하면서 userId 전달
+            Intent intent = new Intent(this, Pill_record.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
         } else if (itemId == R.id.menu_logout) {
             Intent intent = new Intent(this, LoginUI.class);
             startActivity(intent);

@@ -395,6 +395,9 @@ public class Pill_addition extends AppCompatActivity implements NavigationView.O
             // 추가 작업을 여기에 작성 (예: 새로운 액티비티 시작)
         } else if (itemId == R.id.menu_record) {
             // 추가 작업을 여기에 작성
+            // 복용 기록 조회 메뉴 클릭 시 Pill_record 액티비티로 이동하면서 userId 전달
+            Intent intent = new Intent(this, Pill_record.class);
+            intent.putExtra("userId", userId);
         } else if (itemId == R.id.menu_logout) {
 
             Intent intent = new Intent(this, LoginUI.class);

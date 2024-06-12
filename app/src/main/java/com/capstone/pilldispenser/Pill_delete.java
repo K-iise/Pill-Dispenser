@@ -47,7 +47,7 @@ public class Pill_delete extends AppCompatActivity implements NavigationView.OnN
     private TextView memberTimeTextView;
     private Handler handler;
     private String userName;
-
+    private String deviceNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +73,9 @@ public class Pill_delete extends AppCompatActivity implements NavigationView.OnN
         deviceNameTextView = findViewById(R.id.devicenamp);
 
         // 이전 화면으로부터 데이터 받아오기
-        String deviceNumber = getIntent().getStringExtra("deviceNumber");
+        userId = getIntent().getStringExtra("userId");
+        deviceNumber = getIntent().getStringExtra("deviceNumber");
+
         String deviceName = getIntent().getStringExtra("deviceName");
 
         // 받아온 데이터를 TextView에 설정
@@ -101,15 +103,16 @@ public class Pill_delete extends AppCompatActivity implements NavigationView.OnN
                 // DeviceName TextView 찾기
                 TextView DeviceNameView = (TextView) findViewById(R.id.devicenamp);
 
-
                 // DeviceName, DeviceNumber텍스트 가져오기
-                String deviceNumber = DeviceNumberView.getText().toString();
                 String deviceName = DeviceNameView.getText().toString();
 
                 // Pill_select 액티비티로 전달할 Intent 생성
                 Intent intent = new Intent(Pill_delete.this, Pill_select.class);
                 intent.putExtra("deviceNumber", deviceNumber);
                 intent.putExtra("deviceName", deviceName);
+                intent.putExtra("userName", userName);
+                intent.putExtra("userId", userId);
+                intent.putExtra("deviceNumber", deviceNumber);
                 startActivity(intent);
             }
         });
@@ -253,10 +256,14 @@ public class Pill_delete extends AppCompatActivity implements NavigationView.OnN
             Intent intent = new Intent(this, Alarm_select.class);
             intent.putExtra("userId", userId);
             intent.putExtra("userName", userName);
+            intent.putExtra("deviceNumber", deviceNumber);
             startActivity(intent);
             // 추가 작업을 여기에 작성 (예: 새로운 액티비티 시작)
         } else if (itemId == R.id.menu_record) {
             // 추가 작업을 여기에 작성
+            // 복용 기록 조회 메뉴 클릭 시 Pill_record 액티비티로 이동하면서 userId 전달
+            Intent intent = new Intent(this, Pill_record.class);
+            intent.putExtra("userId", userId);
         } else if (itemId == R.id.menu_logout) {
 
             Intent intent = new Intent(this, LoginUI.class);
