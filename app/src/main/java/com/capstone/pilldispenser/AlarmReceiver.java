@@ -22,10 +22,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     private static OutputStream outputStream;
     private static final String TAG = "pilldispenser";
 
-    String alarmTime;
-    String alarmDay;
-    String userId;
-    String deviceNumber;
+    static String alarmTime;
+    static String alarmDay;
+    static String userId;
+    static String deviceNumber;
 
     static String deviceMessage = "";
 
@@ -74,6 +74,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             ringtone.stop();
             Log.d("AlarmReceiver", "Notification sound stopped");
             Log.d("AlarmReceiverString", "deviceMessage = " + deviceMessage);
+            new UpdateAlarm().execute(deviceNumber, alarmTime, alarmDay, userId);
             //sendData(deviceMessage);
         }
     }
@@ -90,6 +91,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
+    // 약통번호와 복용수량을 DB에서 가져오는 메소드.
     private class getPillQuantity extends AsyncTask<String, Void, String> {
 
         @Override
@@ -128,6 +130,26 @@ public class AlarmReceiver extends BroadcastReceiver {
                 e.printStackTrace();
             }
         }
+
+    }
+
+    private static class UpdateAlarm extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String deviceNumber = params[0];
+            String alarmTime = params[1];
+            String alarmDay = params[2];
+            String userId = params[3];
+            String url = "http://61.79.73.178:8080/PillJSP/Android/UpdateAlarm.jsp?deviceNumber=" + deviceNumber + "&alarmTime="
+                    + alarmTime + "&alarmDay=" + alarmDay + "&userId=" + userId;
+            Log.d("UpdateAlarm", "URL: " + url); // URL 로그 출력
+            HttpHandler httpHandler = new HttpHandler();
+            String response = httpHandler.makeServiceCall(url);
+            Log.d("UpdateAlarm", "Response: " + response); // 응답 로그 출력
+            return response;
+        }
+
 
     }
 }

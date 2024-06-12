@@ -45,6 +45,8 @@ public class Alarm_delete extends AppCompatActivity implements NavigationView.On
     private TextView memberTimeTextView;
     private Handler handler;
     private String userName;
+
+    private String deviceNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,7 @@ public class Alarm_delete extends AppCompatActivity implements NavigationView.On
 
         // 이전 화면으로부터 데이터 받아오기
         userId = getIntent().getStringExtra("userId");
+        deviceNumber = getIntent().getStringExtra("deviceNumber");
 
         // activity_main.xml에서 ScrollView 안의 LinearLayout을 참조
         linearLayout = (LinearLayout) findViewById(R.id.alarm_linear);
@@ -97,6 +100,7 @@ public class Alarm_delete extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(Alarm_delete.this, Alarm_select.class);
                 intent.putExtra("userId", userId);
                 intent.putExtra("userName", userName);
+                intent.putExtra("deviceNumber",deviceNumber);
                 startActivity(intent);
             }
         });
